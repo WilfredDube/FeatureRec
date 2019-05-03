@@ -4,14 +4,6 @@
  * This class describes a face of a model shape. It inherits from the OpenCascade TopoDS_Face
  * class.
  *
- * \note Attempts at zen rarely work.
- *
- * \author (last to touch it) $Author: Wilfred Dube $
- *
- * \version $Revision: 1.0 $
- *
- * \date $Date: 2019/05/02 14:16:20 $
- *
  * Contact: wilfreddube@gmail.com
  *
  * Created on: Wed Apr 10 18:39:37 2019

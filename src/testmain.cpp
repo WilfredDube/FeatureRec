@@ -19,10 +19,10 @@
 #include <TopoDS_Vertex.hxx>
 #include <TopExp_Explorer.hxx>
 #include <Interface_Static.hxx>
-#include "math.h"
-#include "bend.h"
-#include "ModelFace.h"
-#include "testtopo.h"
+#include "../include/math.h"
+#include "../include/bend.h"
+#include "../include/ModelFace.h"
+#include "../include/testtopo.h"
 
 void printType(GeomAbs_CurveType curvetype);
 gp_Pnt getNormal(Standard_Integer fid);
@@ -37,7 +37,6 @@ int main(int argc, char const *argv[]) {
   Standard_Integer nIgesFaces,nTransFaces;
 
   //loads file MyFile.igs
-  // IFSelect_ReturnStatus stat =
   myIgesReader.ReadFile (argv[1]);
 
   Standard_Real rp = Interface_Static::RVal("read.precision.val");
@@ -55,12 +54,14 @@ int main(int argc, char const *argv[]) {
 
   int edge_n = 0;
   size_t np = 0, p = 0;
+
+  /* Go through the shape object and extract the faces. */
   for (int i = 1; i <= nbs; i++) {
     TopoDS_Shape shape = myIgesReader.Shape(i);
   //
     // TopAbs_ShapeEnum shapetype = shape.ShapeType();
     TopoDS_Face& face = static_cast<TopoDS_Face&>(TopoDS::Face(shape));
-    ModelFace *test;// = dynamic_cast<ModelFace*>(&face);
+    ModelFace* test;
 
     // test->TopoDS_Face::operator=(face);
     // Bend bend;
