@@ -1,4 +1,6 @@
 build/
 .kdev4/
 html/
+.git/
+.latex/
 model test files/
