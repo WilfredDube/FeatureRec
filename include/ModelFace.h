@@ -60,6 +60,10 @@ class ModelFace : public TopoDS_Face{
   std::vector<ModelEdge> parallel_face_edges; //!< edges of the parallel face.
   std::vector<ModelEdge> central_face_edges; //!< edges of the central face. code for generating the central face not yet available.
 public:
+  ModelFace(Standard_Integer fid, PlaneType planetype){
+    face_id = fid;
+    plane_type = planetype;
+  }
   ModelFace() : TopoDS_Face(), joined_to_faceid1(0), joined_to_faceid2(0){
     this->setFaceType(FaceType::NONE);
   }
@@ -79,6 +83,9 @@ public:
   }
   Standard_Integer getJoiningFaceID2() { return joined_to_faceid2; }
 
+  void setBendAngle(long double angle) { bend_angle = angle; }
+  long double getBendAngle(){ return bend_angle; }
+
   /**
  * a normal member taking one argument to set the curvature attribute of the face. If the curvature != 0 then
  * the face is a bend face and so its radius is also set. *
@@ -89,7 +96,7 @@ public:
 
     if (Curvature != 0) {
       Radius = ((Curvature < 0) ? -(1 / Curvature) : (1 / Curvature));
-      std::cout << "Radius : " << Radius <<'\n';
+      // std::cout << "Radius : " << Radius <<'\n';
     }
   }
 
@@ -105,6 +112,16 @@ public:
 
   void setUnitNormal(gp_Dir unit_normal) {
     face_unit_normal = unit_normal;
+  }
+
+  gp_Pnt getNormal(Standard_Integer fid, std::vector<ModelFace> vface){
+    gp_Pnt vt(Standard_Real(NULL), Standard_Real(NULL), Standard_Real(NULL));
+    for (auto& face : vface) {
+      if (face.getFaceId() == this->face_id) {
+        vt = face.getFaceNormal();
+      }
+    }
+    return vt;
   }
 
   /**
@@ -150,6 +167,12 @@ public:
     /* code */
     // std::cout << "Unit Normal : ("<< face_unit_normal.X()<<", "<< face_unit_normal.Y()<<", "<<face_unit_normal.Z()<< ")\n";
   }
+
+  void printNormal() {
+    /* code */
+    // std::cout << "Unit Normal : ("<< face_normal.X()<<", "<< face_normal.Y()<<", "<<face_normal.Z()<< ")\n";
+  }
+
   void addEdge(const ModelEdge& n){
     face_edges.push_back(n);
     // std::cout << "Size : " <<v.size()<< '\n';
@@ -163,7 +186,7 @@ public:
  * computes and sets the normal vector of the face.
  */
   void computeFaceNormal(){
-    face_normal = compute_normal(this->face_edges);
+    // face_normal = compute_normal(this->face_edges);
     // std::cout << "FACE NORM : (" << face_normal.X()<< ", " << face_normal.Y()<< ", " << face_normal.Z() << ")\n";
   }
 
@@ -205,14 +228,15 @@ public:
               /* If the face has exactly 2 ARC edges then it is a BEND_SIDE face. */
               if (arc_edge_cnt == 2) {
                 faces[i].setFaceType(FaceType::BEND_SIDE);
-                std::cout << "BEND_SIDE" << '\n';
+                // std::cout << "BEND_SIDE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
                 arc_edge_cnt = 0;
                 break;
               }
             }
         break;
         case PlaneType::NON_PLANAR : faces[i].setFaceType(FaceType::BEND_FACE);
-        std::cout << "BEND_FACE" << '\n';
+        // std::cout << "BEND_FACE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
+        faces[i].printNormal();
         break;
       }
     }
@@ -241,12 +265,13 @@ public:
             for (size_t k = 0; k < 4; k++) {
               for (size_t l = 0; l < 4; l++) {
                 if (faces[i].face_edges[k].getEdgeType() == EdgeType::LINE) {
-                  if (ModelEdge::compare_edges(faces[i].face_edges[k], faces[j].face_edges[l])) {
+                  // if (ModelEdge::compare_edges(faces[i].face_edges[k], faces[j].face_edges[l]))
+                  if(faces[i].face_edges[k].getEdge().IsSame(faces[j].face_edges[l].getEdge())){
+                    std::cout << "Face ID : "<< faces[j].face_id  << '\n';
                     faces[j].setFaceType(FaceType::FACE);
-                    std::cout << "FACE" << '\n';
+                    // std::cout << "FACE" << '\n';
                     faces[i].face_edges[k].setEdgePosition(EdgePosition::JOINING_EDGE);
                     faces[j].face_edges[l].setEdgePosition(EdgePosition::JOINING_EDGE);
-                    std::cout << "Face ID : "<< faces[j].face_id  << '\n';
 
                     if ((faces[i].getJoiningFaceID1() == 0) && (faces[i].getJoiningFaceID2() == 0)) {
                       faces[i].setJoiningFaceID1(faces[j].face_id);
@@ -266,7 +291,7 @@ public:
     /* For the unclassified faces set their type to THICKNESS_DEFINING_FACE */
     for (size_t i = 0; i < count; i++) {
       if (faces[i].face_type == FaceType::NONE) {
-        std::cerr << "THICKNESS_DEFINING_FACE" << '\n';
+        // std::cerr << "THICKNESS_DEFINING_FACE" << '\n';
         faces[i].setFaceType(FaceType::THICKNESS_DEFINING_FACE);
       }
     }

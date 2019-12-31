@@ -1,3 +1,4 @@
+#pragma once
 #include "ModelFace.h"
 
 class Bend : public ModelFace {
@@ -11,5 +12,6 @@ class Bend : public ModelFace {
     joined_to_faceid = face_id;
   }
 
-
+  void setBendAngle(long double angle) { bend_angle = angle; }
+  long double getBendAngle(){ return bend_angle; }
 };

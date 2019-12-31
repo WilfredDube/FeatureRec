@@ -7,24 +7,25 @@ enum class EdgePosition { DEFAULT = -1, JOINING_EDGE, SIDE_EDGE, DISJOINT_EDGE }
 
 class ModelEdge
 {
-public:
   int count;
   Standard_Integer edge_number;
   EdgeType edge_type;
   EdgePosition edge_position;
   gp_Pnt line_vector;
   gp_Pnt line_unit_vector;
-  gp_Pnt start_vertex;
-  gp_Pnt terminate_vertex;
   Standard_Real edge_length;
   bool isrational;
   Standard_Integer same_as_edge_number;
+  TopoDS_Edge edge;
+public:
+  gp_Pnt start_vertex;
+  gp_Pnt terminate_vertex;
   // bool isjoining_edge;
   // bool isside_edge;
   // bool isdisjoint_edge;
 
   ModelEdge(){}
-  ModelEdge(gp_Pnt startv[]) : count(0), edge_number(EDGE_NUM), edge_type(EdgeType::DEFAULT){
+  ModelEdge(std::vector<gp_Pnt> startv) : count(0), edge_number(EDGE_NUM), edge_type(EdgeType::DEFAULT){
     edge_type = EdgeType::DEFAULT;
     start_vertex = startv[0];
     terminate_vertex = startv[1];
@@ -36,6 +37,9 @@ public:
   // void setIsJoiningEdge(bool is_it) { isjoining_edge = is_it;  }
   // void setIsSideEdge(bool is_it) { isside_edge = is_it;  }
   // void setIsDisjointEdge(bool is_it) { isdisjoint_edge = is_it;  }
+
+  void setEdge(TopoDS_Edge edge){ this->edge = edge; }
+  TopoDS_Edge getEdge(){ return this->edge; }
 
   void setEdgeNum(Standard_Integer enumb){  edge_number = enumb; }//std::cout << edge_number << ": ";  }
   Standard_Integer getEdgeNum() const { return edge_number; }

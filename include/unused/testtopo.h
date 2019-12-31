@@ -51,9 +51,9 @@ static void tv_classifyFaces(std::vector<ModelFace>& faces, std::vector<TopoDS_F
               TopoDS_Shape shape = fedgeEx.Current();
               TopoDS_Edge face_edge = TopoDS::Edge(shape);
               BRepAdaptor_Curve curve = BRepAdaptor_Curve(face_edge);
-              // if (BRep_Tool::Degenerated(face_edge)) {
-              //   std::cout << "ARC" << '\n';
-              // }
+              if (BRep_Tool::Degenerated(face_edge)) {
+                std::cout << "ARC" << '\n';
+              }
               if (BRepTools::Compare(bend_edge, face_edge)) {
                 std::cout << "Checking edges..." << '\n';
               }

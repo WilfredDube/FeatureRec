@@ -1,7 +1,31 @@
+#pragma once
 #include <cmath>
 #include <vector>
 #include "ModelEdge.h"
-// #include "test.h"
+
+gp_Dir
+compute_normal(TopoDS_Face face)
+{
+  Standard_Real umin, umax, vmin, vmax;
+  BRepTools::UVBounds(face, umin, umax, vmin, vmax); // create surface
+  Handle(Geom_Surface) surf=BRep_Tool::Surface(face); // get surface properties
+  GeomLProp_SLProps props(surf, umin, vmin, 1, 0.01); // get surface normal
+  gp_Dir norm=props.Normal(); // check orientation
+
+  return norm;
+}
+
+Standard_Real
+compute_curvature(TopoDS_Face face)
+{
+  BRepAdaptor_Surface surface = BRepAdaptor_Surface(face);
+  double u = (surface.FirstUParameter() + surface.LastUParameter()) / 2.0;
+  double v = (surface.FirstVParameter() + surface.LastVParameter()) / 2.0;
+
+  BRepLProp_SLProps surfaceProps(surface, u, v, 2, gp::Resolution());
+
+  return surfaceProps.MeanCurvature();
+}
 
 long double
 compute_euclidean_norm(gp_Pnt *vt)
@@ -36,17 +60,17 @@ compute_plane_equation(std::vector<ModelEdge> edges, gp_Pnt normal)
   return -10000000;
 }
 
-static bool
-compare_vl(gp_Pnt v1, gp_Pnt v2)
-{
-  bool truth = false;
-
-  if (v1.X() == v2.X() && v1.Y() == v2.Y() && v1.Z() == v2.Z()) {
-    truth = true;
-  }
-
-  return truth;
-}
+// static bool
+// compare_vl(gp_Pnt v1, gp_Pnt v2)
+// {
+//   bool truth = false;
+//
+//   if (v1.X() == v2.X() && v1.Y() == v2.Y() && v1.Z() == v2.Z()) {
+//     truth = true;
+//   }
+//
+//   return truth;
+// }
 
 gp_Pnt
 compute_cross_product(gp_Pnt *a, gp_Pnt *b)
@@ -130,32 +154,32 @@ compute_angle(gp_Pnt n1, gp_Pnt n2)
   return angle;
 }
 
-gp_Pnt
-compute_normal(std::vector<ModelEdge> edges)
-{
-  ModelEdge edge1, edge2;
-
-  edge1 = edges[0];
-  for (size_t i = 0; i < edges.size(); i++) {
-    if (edge1.edge_number == edges[i].edge_number) {
-      continue;
-    }
-
-    if (compare_vl(edge1.start_vertex, (edges[i]).start_vertex) ||
-        compare_vl(edge1.terminate_vertex, (edges[i]).start_vertex) ||
-        compare_vl(edge1.terminate_vertex, (edges[i]).terminate_vertex) ||
-        compare_vl(edge1.start_vertex, (edges[i]).terminate_vertex)) {
-          edge2 = (edges[i]);
-          // printf("%d\n", edge2->edge_number);
-          break;
-    }
-
-  }
-
-  gp_Pnt vta = compute_line_vector(&edge1);
-  gp_Pnt vtb = compute_line_vector(&edge2);
-
-  vta = compute_cross_product(&vta, &vtb);
-
-  return vta;
-}
+// gp_Pnt
+// compute_normal(std::vector<ModelEdge> edges)
+// {
+//   ModelEdge edge1, edge2;
+//
+//   edge1 = edges[0];
+//   for (size_t i = 0; i < edges.size(); i++) {
+//     if (edge1.edge_number == edges[i].edge_number) {
+//       continue;
+//     }
+//
+//     if (compare_vl(edge1.start_vertex, (edges[i]).start_vertex) ||
+//         compare_vl(edge1.terminate_vertex, (edges[i]).start_vertex) ||
+//         compare_vl(edge1.terminate_vertex, (edges[i]).terminate_vertex) ||
+//         compare_vl(edge1.start_vertex, (edges[i]).terminate_vertex)) {
+//           edge2 = (edges[i]);
+//           // printf("%d\n", edge2->edge_number);
+//           break;
+//     }
+//
+//   }
+//
+//   gp_Pnt vta = compute_line_vector(&edge1);
+//   gp_Pnt vtb = compute_line_vector(&edge2);
+//
+//   vta = compute_cross_product(&vta, &vtb);
+//
+//   return vta;
+// }
