@@ -267,7 +267,7 @@ public:
                 if (faces[i].face_edges[k].getEdgeType() == EdgeType::LINE) {
                   // if (ModelEdge::compare_edges(faces[i].face_edges[k], faces[j].face_edges[l]))
                   if(faces[i].face_edges[k].getEdge().IsSame(faces[j].face_edges[l].getEdge())){
-                    std::cout << "Face ID : "<< faces[j].face_id  << '\n';
+                    // std::cout << "Face ID : "<< faces[j].face_id  << '\n';
                     faces[j].setFaceType(FaceType::FACE);
                     // std::cout << "FACE" << '\n';
                     faces[i].face_edges[k].setEdgePosition(EdgePosition::JOINING_EDGE);

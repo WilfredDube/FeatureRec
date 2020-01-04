@@ -27,13 +27,16 @@ public:
     Standard_Integer nbs = reader.NbShapes();
 
     /* Go through the shape object and extract the faces. */
-    for (int i = 1; i <= nbs; i++, ++p) {
+    for (int i = 1; i <= nbs; i++) {
       TopoDS_Shape ashape = reader.Shape(i);
       TopoDS_Face& face = static_cast<TopoDS_Face&>(TopoDS::Face(ashape));
       ModelFace* test;
 
+      ++p;
       Standard_Real curvature = compute_curvature(face);
       if (curvature == 0.0){
+        std::cout << "000000000000: "  << '\n';
+
         test = new ModelFace(p, PlaneType::PLANAR);
       } else {
         test = new ModelFace(p, PlaneType::NON_PLANAR);
@@ -41,7 +44,7 @@ public:
 
       test->setCurvature(curvature);
 
-      int c = 0;
+      // int c = 0;
       for (TopExp_Explorer edgeEx(face, TopAbs_EDGE); edgeEx.More(); edgeEx.Next()){
         TopoDS_Edge edge = TopoDS::Edge(edgeEx.Current());
 
@@ -52,12 +55,13 @@ public:
         ++edge_n;
         edgex.setEdge(edge);
         edgex.setEdgeNum(edge_n);
+        // std::cout << "Rational: " << BRepAdaptor_Curve(edge).IsRational() << '\n';
         edgex.setIsRational(BRepAdaptor_Curve(edge).IsRational());
         edgex.setEdgeLength(compute_length(&edgex));
         edgex.setLineVector(compute_line_vector(&edgex));
         edgex.setLineUnitVector(compute_line_unit_vector(edgex.getLineVector()));
         test->addEdge(edgex);
-        c++;
+        // c++;
       }
 
       test->setUnitNormal(compute_normal(face));

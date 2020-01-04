@@ -28,7 +28,7 @@ public:
 
     Standard_Integer nbs = reader.NbShapes();
 
-    for (Standard_Integer i=1; i<=nbs; i++, ++j, ++p) {
+    for (Standard_Integer i=1; i<=nbs; i++, ++j) {
       aShape = reader.Shape(i);
       TopExp_Explorer myFaceExplorer(aShape, TopAbs_FACE);
 
@@ -38,9 +38,12 @@ public:
         TopoDS_Face face = TopoDS::Face(shape);
         ModelFace *test;
 
+        ++p;
+        // std::cout << "face id: " << p << '\n';
         Standard_Real curvature = compute_curvature(face);
         if (curvature == 0.0){
           test = new ModelFace(p, PlaneType::PLANAR);
+          std::cout << "Face id: "<< test->getFaceId() <<"---------: " << p  << '\n';
         } else {
           test = new ModelFace(p, PlaneType::NON_PLANAR);
         }
@@ -60,7 +63,9 @@ public:
 
           ModelEdge edgex(endpoints);
           ++edge_n;
+          edgex.setEdge(edge);
           edgex.setEdgeNum(edge_n);
+          // std::cout << "Rational: " << BRepAdaptor_Curve(edge).IsRational() << '\n';
           edgex.setIsRational(BRepAdaptor_Curve(edge).IsRational());
           edgex.setEdgeLength(compute_length(&edgex));
           edgex.setLineVector(compute_line_vector(&edgex));
