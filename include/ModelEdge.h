@@ -58,7 +58,10 @@ public:
   EdgePosition getEdgePosition(){ return edge_position; }
 
   void setEdgeLength(Standard_Real len) { edge_length = len; }
-  Standard_Real getEdgeLength(){ return edge_length; }
+  Standard_Real getEdgeLength(){
+    std::cout << "in edge: " << edge_length << '\n';
+    return  edge_length;
+  }
 
   void setLineVector(gp_Pnt l_vector) { line_vector = l_vector; }
   gp_Pnt getLineVector() { return line_vector; }
