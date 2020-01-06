@@ -43,6 +43,7 @@ public:
         }
 
         test->setUnitNormal(compute_normal(face));
+        test->setCurvature(curvature);
         test->computeFaceNormal();
         test->computeFaceEquation();
         vface.push_back(*test);
