@@ -161,6 +161,28 @@ public:
     // std::cout << "Size : " <<v.size()<< '\n';
   }
 
+  void extractEdges(TopoDS_Face face) {
+    ModelVertex modelVertex;
+    int edge_n = 0;
+    for (TopExp_Explorer edgeEx(face, TopAbs_EDGE); edgeEx.More(); edgeEx.Next()){
+      TopoDS_Edge edge = TopoDS::Edge(edgeEx.Current());
+
+      std::vector<gp_Pnt> endpoints;
+      endpoints = modelVertex.getEdgeEndPoints(edge);
+
+      ModelEdge edgex(endpoints);
+      ++edge_n;
+      edgex.setEdge(edge);
+      edgex.setEdgeNum(edge_n);
+      edgex.setIsRational(BRepAdaptor_Curve(edge).IsRational());
+      edgex.setEdgeType();
+      edgex.setEdgeLength(compute_length(&edgex));
+      edgex.setLineVector(compute_line_vector(&edgex));
+      edgex.setLineUnitVector(compute_line_unit_vector(edgex.getLineVector()));
+      addEdge(edgex);
+    }
+  }
+
   std::vector<ModelEdge> getFaceEdges(){
     return face_edges;
   }
