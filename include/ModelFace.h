@@ -15,6 +15,7 @@
 #include <TopoDS_Edge.hxx>
 #include <vector>
 #include "ModelEdge.h"
+#include "../include/ModelVertex.h"
 
 /**
  * enum PlaneType
@@ -43,6 +44,7 @@ class ModelFace : public TopoDS_Face{
   gp_Pnt face_normal; //!< the normal vector to the face.
   gp_Dir face_unit_normal; //!< the unit normal vector to the face.
   bool taken;
+  Standard_Real bend_length;
 
   Standard_Integer joined_to_faceid1; //!< the face ID of the face connected to the bend face.
   Standard_Integer joined_to_faceid2; //!< the face ID of the second face connected to the bend face.
