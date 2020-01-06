@@ -57,6 +57,7 @@ class ModelFace : public TopoDS_Face{
   std::vector<ModelEdge> parallel_face_edges; //!< edges of the parallel face.
   std::vector<ModelEdge> central_face_edges; //!< edges of the central face. code for generating the central face not yet available.
 public:
+  static int nbends;
   Standard_Real Radius; //!< bend radius : zero if face is planar and non-zero if face is a bend.
   ModelFace(Standard_Integer fid, PlaneType planetype): isInternal(false), bend_length(0){
     face_id = fid;
