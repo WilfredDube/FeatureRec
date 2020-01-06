@@ -196,7 +196,7 @@ public:
  * computes and sets the normal vector of the face.
  */
   void computeFaceNormal(){
-    // face_normal = compute_normal(this->face_edges);
+    face_normal = compute_normal(this->face_edges);
     // std::cout << "FACE NORM : (" << face_normal.X()<< ", " << face_normal.Y()<< ", " << face_normal.Z() << ")\n";
   }
 
