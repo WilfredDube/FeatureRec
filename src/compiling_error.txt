@@ -1,4 +1,0 @@
-/home/unbusy/Projects/C++/FeactureRec/src/testmain.cpp:4:34: fatal error: IGESControl_Reader.hxx: No such file or directory
- #include <IGESControl_Reader.hxx>
-                                  ^
-compilation terminated.
