@@ -93,6 +93,17 @@ public:
   void setBendAngle(long double angle) { bend_angle = angle; }
   long double getBendAngle(){ return bend_angle; }
 
+  Standard_Real getBendLength(){ return bend_length; }
+  void setBendLength(std::vector<ModelEdge> face_edges){
+    size_t i;
+    for (i = 0; i < face_edges.size(); i++) {
+      if (face_edges[i].getEdgeType() == EdgeType::LINE) {
+        bend_length = face_edges[i].getEdgeLength();
+        break;
+      }
+    }
+  }
+
   /**
  * a normal member taking one argument to set the curvature attribute of the face. If the curvature != 0 then
  * the face is a bend face and so its radius is also set. *
@@ -171,7 +182,6 @@ public:
 
   void addEdge(const ModelEdge& n){
     face_edges.push_back(n);
-    // std::cout << "Size : " <<v.size()<< '\n';
   }
 
   void extractEdges(TopoDS_Face face) {
