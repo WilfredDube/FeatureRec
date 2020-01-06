@@ -45,7 +45,9 @@ valgrind ./test ../model\ test\ files/new/90.IGS --track-origins=yes --leak-chec
 
 std::vector<ModelFace> vface;
 std::vector<TopoDS_Face> tvfaces;
-int main(int argc, char const *argv[]) {
+
+int main(int argc, char const *argv[])
+{
   StepProcessor stepProcessor;
   IgesProcessor igesProcessor;
   ModelReaderClass mReader;
