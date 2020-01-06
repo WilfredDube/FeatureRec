@@ -60,17 +60,17 @@ compute_plane_equation(std::vector<ModelEdge> edges, gp_Pnt normal)
   return -10000000;
 }
 
-// static bool
-// compare_vl(gp_Pnt v1, gp_Pnt v2)
-// {
-//   bool truth = false;
-//
-//   if (v1.X() == v2.X() && v1.Y() == v2.Y() && v1.Z() == v2.Z()) {
-//     truth = true;
-//   }
-//
-//   return truth;
-// }
+static bool
+compare_vl(gp_Pnt v1, gp_Pnt v2)
+{
+  bool truth = false;
+
+  if (v1.X() == v2.X() && v1.Y() == v2.Y() && v1.Z() == v2.Z()) {
+    truth = true;
+  }
+
+  return truth;
+}
 
 gp_Pnt
 compute_cross_product(gp_Pnt *a, gp_Pnt *b)
