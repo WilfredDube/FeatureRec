@@ -80,10 +80,15 @@ int main(int argc, char const *argv[])
   size_t count = vface.size();
   for (size_t i = 0; i < count; i++) {
     if (vface[i].getFaceType() == FaceType::BEND_FACE) {
-      vface[i].setBendAngle(compute_angle(vface[i].getNormal(vface[i].getJoiningFaceID1(), vface), vface[i].getNormal(vface[i].getJoiningFaceID1(), vface)));
-      std::cout << "F"<< vface[i].getJoiningFaceID1() << "---B" << vface[i].getFaceId() << "---F" <<vface[i].getJoiningFaceID2()<< " = ";
-      std::cout << ", Angle : " << vface[i].getBendAngle();
-      std::cout << ", Radius : " << vface[i].getFaceRadius() << '\n';
+      if (vface[i].getIsInternal() == true) {
+        gp_Pnt firstnorm = vface[i].getNormal(vface[i].getJoiningFaceID1(), vface);
+        gp_Pnt secondnorm = vface[i].getNormal(vface[i].getJoiningFaceID2(), vface);
+        vface[i].setBendAngle(compute_angle(firstnorm, secondnorm));
+        std::cout << "F"<< vface[i].getJoiningFaceID1() << "---B" << vface[i].getFaceId() << "---F" <<vface[i].getJoiningFaceID2()<< " = ";
+        std::cout << ", Angle : " << vface[i].getBendAngle();
+        std::cout << ", Radius : " << vface[i].getFaceRadius();
+        std::cout << ", Bend Length: " << vface[i].getBendLength()<< " mm" << '\n';
+      }
     }
   }
 
