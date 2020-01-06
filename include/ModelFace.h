@@ -174,26 +174,6 @@ public:
   }
 
 /**
- * Classifies the edges in each face based on whether they are rational or polynomial (ARC or STRAIGHT_LINE).
- * @param faces a list for faces.
- */
-  static void classifyEdges(std::vector<ModelFace>& faces) {
-    size_t count = faces.size();
-    for (size_t i = 0; i < count; i++) {
-      // std::cout << ((faces[i].plane_type == PlaneType::PLANAR) ? "FACE ID : " : "===BEND ID : ") << faces[i].getFaceId() << '\n';
-      for (size_t j = 0; j < faces[i].face_edges.size(); j++) {
-        if (faces[i].face_edges[j].IsRational() == true) {
-          faces[i].face_edges[j].setEdgeType(EdgeType::ARC);
-          // std::cout << "ARC" << '\n';
-        } else {
-          faces[i].face_edges[j].setEdgeType(EdgeType::LINE);
-          // std::cout << "LINE" << '\n';
-        }
-      }
-    }
-  }
-
-/**
  * Identifies BEND_FACE and BEND_SIDE faces types.
  * @param faces a list for faces.
  */
