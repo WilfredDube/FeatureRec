@@ -48,32 +48,6 @@ public:
           test = new ModelFace(p, PlaneType::NON_PLANAR);
         }
 
-        test->setCurvature(curvature);
-
-        if(!ShapeAnalysis::IsOuterBound(face)) {
-          cout<<"Face has not outer boundary"<<endl;
-        }
-
-        // int c = 0;
-        for (TopExp_Explorer edgeEx(face, TopAbs_EDGE); edgeEx.More(); edgeEx.Next()){
-          TopoDS_Edge edge = TopoDS::Edge(edgeEx.Current());
-
-          std::vector<gp_Pnt> endpoints;
-          endpoints = modelVertex.getEdgeEndPoints(edge);
-
-          ModelEdge edgex(endpoints);
-          ++edge_n;
-          edgex.setEdge(edge);
-          edgex.setEdgeNum(edge_n);
-          // std::cout << "Rational: " << BRepAdaptor_Curve(edge).IsRational() << '\n';
-          edgex.setIsRational(BRepAdaptor_Curve(edge).IsRational());
-          edgex.setEdgeLength(compute_length(&edgex));
-          edgex.setLineVector(compute_line_vector(&edgex));
-          edgex.setLineUnitVector(compute_line_unit_vector(edgex.getLineVector()));
-          test->addEdge(edgex);
-          // c++;
-        }
-
         test->setUnitNormal(compute_normal(face));
         test->computeFaceNormal();
         test->computeFaceEquation();
