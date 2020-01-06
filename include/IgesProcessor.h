@@ -40,6 +40,7 @@ public:
       test->setUnitNormal(compute_normal(face));
       test->setCurvature(curvature);
       test->extractEdges(face);
+      test->setBendLength(test->getFaceEdges());
       test->computeFaceNormal();
       test->computeFaceEquation();
       test->printUnitNormal();
