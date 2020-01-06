@@ -73,7 +73,6 @@ int main(int argc, char const *argv[])
     std::cout << "Unknown file format" << '\n';
   }
 
-  // ModelFace::classifyEdges(vface);
   ModelFace::classifyBS_BF(vface);
   ModelFace::classifyFaces(vface);
 
