@@ -28,6 +28,7 @@
 #include <ShapeAnalysis_Edge.hxx>
 #include <ShapeFix_Edge.hxx>
 #include <ShapeBuild_ReShape.hxx>
+#include <algorithm>
 #include "../include/ModelMath.h"
 #include "../include/ModelFace.h"
 #include "../include/StepProcessor.h"
@@ -77,6 +78,12 @@ int main(int argc, char const *argv[])
   ModelFace::classifyFaces(vface);
 
   size_t count = vface.size();
+
+  std::sort(vface.begin(), vface.end(), [ ]( const auto& lhs, const auto& rhs )
+  {
+    return lhs.Radius < rhs.Radius;
+  });
+
   for (size_t i = 0; i < count; i++) {
     if (vface[i].getFaceType() == FaceType::BEND_FACE) {
       if (vface[i].getIsInternal() == true) {
