@@ -9,7 +9,6 @@
 #include <TopExp_Explorer.hxx>
 #include "../include/ModelMath.h"
 #include "../include/ModelFace.h"
-#include "../include/ModelVertex.h"
 
 using namespace std;
 
@@ -20,8 +19,6 @@ class IgesProcessor
 
 public:
   void extractFeactures(XSControl_Reader reader) {
-    ModelVertex modelVertex;
-    int edge_n = 0;
     size_t p = 0;
 
     Standard_Integer nbs = reader.NbShapes();
@@ -35,8 +32,6 @@ public:
       ++p;
       Standard_Real curvature = compute_curvature(face);
       if (curvature == 0.0){
-        std::cout << "000000000000: "  << '\n';
-
         test = new ModelFace(p, PlaneType::PLANAR);
       } else {
         test = new ModelFace(p, PlaneType::NON_PLANAR);
