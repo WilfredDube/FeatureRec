@@ -145,6 +145,7 @@ compute_angle(gp_Pnt n1, gp_Pnt n2)
     cosine = 0;
   } else {
     cosine = dotp / (en1 * en2);
+    // cout << "Dot product : " << en2 << endl;
   }
 
   long double value = 180.0 / PI;
@@ -154,32 +155,32 @@ compute_angle(gp_Pnt n1, gp_Pnt n2)
   return angle;
 }
 
-// gp_Pnt
-// compute_normal(std::vector<ModelEdge> edges)
-// {
-//   ModelEdge edge1, edge2;
-//
-//   edge1 = edges[0];
-//   for (size_t i = 0; i < edges.size(); i++) {
-//     if (edge1.edge_number == edges[i].edge_number) {
-//       continue;
-//     }
-//
-//     if (compare_vl(edge1.start_vertex, (edges[i]).start_vertex) ||
-//         compare_vl(edge1.terminate_vertex, (edges[i]).start_vertex) ||
-//         compare_vl(edge1.terminate_vertex, (edges[i]).terminate_vertex) ||
-//         compare_vl(edge1.start_vertex, (edges[i]).terminate_vertex)) {
-//           edge2 = (edges[i]);
-//           // printf("%d\n", edge2->edge_number);
-//           break;
-//     }
-//
-//   }
-//
-//   gp_Pnt vta = compute_line_vector(&edge1);
-//   gp_Pnt vtb = compute_line_vector(&edge2);
-//
-//   vta = compute_cross_product(&vta, &vtb);
-//
-//   return vta;
-// }
+gp_Pnt
+compute_normal(std::vector<ModelEdge> edges)
+{
+  ModelEdge edge1, edge2;
+
+  edge1 = edges[0];
+  for (size_t i = 0; i < edges.size(); i++) {
+    if (edge1.getEdgeNum() == edges[i].getEdgeNum()) {
+      continue;
+    }
+
+    if (compare_vl(edge1.start_vertex, (edges[i]).start_vertex) ||
+        compare_vl(edge1.terminate_vertex, (edges[i]).start_vertex) ||
+        compare_vl(edge1.terminate_vertex, (edges[i]).terminate_vertex) ||
+        compare_vl(edge1.start_vertex, (edges[i]).terminate_vertex)) {
+          edge2 = (edges[i]);
+          // printf("%d\n", edge2->edge_number);
+          break;
+    }
+
+  }
+
+  gp_Pnt vta = compute_line_vector(&edge1);
+  gp_Pnt vtb = compute_line_vector(&edge2);
+
+  vta = compute_cross_product(&vta, &vtb);
+
+  return vta;
+}
