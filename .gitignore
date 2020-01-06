@@ -3,4 +3,5 @@ build/
 html/
 .git/
 .latex/
+src/test
 model test files/
