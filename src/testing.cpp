@@ -93,6 +93,7 @@ int main(int argc, char const *argv[])
   }
 
   std::cout << "SIZE : " <<vface.size()<< '\n';
+  std::cout << "# of Bends: " << ModelFace::nbends / 2 << '\n';
 
   return 0;
 }
