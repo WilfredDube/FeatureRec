@@ -4,7 +4,7 @@
 #include "ModelEdge.h"
 
 gp_Dir
-compute_Unit_normal(TopoDS_Face face)
+compute_unit_normal(TopoDS_Face face)
 {
   Standard_Real umin, umax, vmin, vmax;
   BRepTools::UVBounds(face, umin, umax, vmin, vmax); // create surface

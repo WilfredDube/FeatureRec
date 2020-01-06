@@ -42,11 +42,10 @@ public:
           test = new ModelFace(p, PlaneType::NON_PLANAR);
         }
 
-        test->setUnitNormal(compute_normal(face));
+        test->setUnitNormal(compute_unit_normal(face));
         test->setCurvature(curvature);
         test->extractEdges(face);
         test->setBendLength(test->getFaceEdges());
-        test->setUnitNormal(compute_Unit_normal(face));
         test->computeFaceNormal();
         test->computeFaceEquation();
         vface.push_back(*test);
