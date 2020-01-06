@@ -62,6 +62,10 @@ public:
   ModelFace(Standard_Integer fid, PlaneType planetype): isInternal(false), bend_length(0){
     face_id = fid;
     plane_type = planetype;
+
+    if (this->plane_type == PlaneType::NON_PLANAR) {
+      ++nbends;
+    }
   }
   ModelFace() : TopoDS_Face(), joined_to_faceid1(0), joined_to_faceid2(0){
     this->setFaceType(FaceType::NONE);
