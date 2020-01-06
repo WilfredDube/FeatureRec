@@ -16,8 +16,6 @@
 #include <vector>
 #include "ModelEdge.h"
 
-// static const size_t EDGE_CNT = 4;
-
 /**
  * enum PlaneType
  * Classifies faces into PLANAR or NON PLANAR types.
@@ -69,10 +67,6 @@ public:
   }
   ~ModelFace(){}
 
-  // void operator = (const TopoDS_Face& base_)
-  // {
-  //   TopoDS_Face::operator=(base_);
-  // }
   void setJoiningFaceID1(Standard_Integer face_id) {
     joined_to_faceid1 = face_id;
   }
@@ -137,23 +131,12 @@ public:
 
   void setFaceType(FaceType ftype) {
     face_type = ftype;
-
-    // if (face_type == FaceType::BEND_FACE) {
-    //   Radius = (Curvature < 0) ? -(1 / Curvature) : (1 / Curvature);
-    //   std::cout << "Radius : " << Radius <<'\n';
-    // }
   }
+
   FaceType getFaceType(){ return face_type; }
 
   void setPlaneType(PlaneType ptype){
     plane_type = ptype;
-
-    // switch (plane_type) {
-    //   case PlaneType::PLANAR :   std::cout << "Face ID : F" << this->getFaceId() << '\n';
-    //   break;
-    //   case PlaneType::NON_PLANAR :   std::cout << "Face ID : B" << this->getFaceId() << '\n';
-    //   break;
-    // }
   }
 
   PlaneType getPlaneType(){

@@ -7,10 +7,8 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopExp_Explorer.hxx>
-#include <ShapeAnalysis.hxx>
 #include "../include/ModelMath.h"
 #include "../include/ModelFace.h"
-#include "../include/ModelVertex.h"
 
 using namespace std;
 
@@ -21,9 +19,7 @@ class StepProcessor
 
 public:
   void extractFeactures(XSControl_Reader reader) {
-    ModelVertex modelVertex;
     TopoDS_Shape aShape;
-    int edge_n = 0;
     size_t p = 0, j = 0;
 
     Standard_Integer nbs = reader.NbShapes();
@@ -39,11 +35,9 @@ public:
         ModelFace *test;
 
         ++p;
-        // std::cout << "face id: " << p << '\n';
         Standard_Real curvature = compute_curvature(face);
         if (curvature == 0.0){
           test = new ModelFace(p, PlaneType::PLANAR);
-          std::cout << "Face id: "<< test->getFaceId() <<"---------: " << p  << '\n';
         } else {
           test = new ModelFace(p, PlaneType::NON_PLANAR);
         }
@@ -56,7 +50,6 @@ public:
 
         myFaceExplorer.Next();
       }
-
     }
   }
 
