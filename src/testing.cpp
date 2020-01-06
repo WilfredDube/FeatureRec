@@ -84,6 +84,17 @@ int main(int argc, char const *argv[])
     return lhs.Radius < rhs.Radius;
   });
 
+  size_t nbends = ModelFace::nbends;
+  for (size_t i = 0; i < count; i++) {
+    if (vface[i].getFaceType() == FaceType::BEND_FACE) {
+      for (size_t j = 0; j < nbends/2; j++) {
+        vface[i + j].setIsInternal(true);
+        // std::cerr << j << '\n';
+      }
+      break;
+    }
+  }
+
   for (size_t i = 0; i < count; i++) {
     if (vface[i].getFaceType() == FaceType::BEND_FACE) {
       if (vface[i].getIsInternal() == true) {
