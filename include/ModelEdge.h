@@ -44,7 +44,14 @@ public:
   void setEdgeNum(Standard_Integer enumb){  edge_number = enumb; }//std::cout << edge_number << ": ";  }
   Standard_Integer getEdgeNum() const { return edge_number; }
 
-  void setEdgeType(EdgeType etype){ edge_type = etype; }
+  void setEdgeType(){
+      if (IsRational() == true) {
+        edge_type = EdgeType::ARC;
+      } else {
+        edge_type = EdgeType::LINE;
+      }
+    }
+
   EdgeType getEdgeType(){ return edge_type; }
 
   void setEdgePosition(EdgePosition epos){ edge_position = epos; }
