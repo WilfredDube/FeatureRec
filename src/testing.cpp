@@ -62,13 +62,13 @@ int main(int argc, char const *argv[])
 
   switch (fileFormat) {
     case FileFormat::IGES_FORMAT:
-        igesProcessor.extractFeactures(str);
-        vface = igesProcessor.getModelFaces();
-        break;
+    igesProcessor.extractFeactures(str);
+    vface = igesProcessor.getModelFaces();
+    break;
     case FileFormat::STEP_FORMAT:
-        stepProcessor.extractFeactures(str);
-        vface = stepProcessor.getModelFaces();
-        break;
+    stepProcessor.extractFeactures(str);
+    vface = stepProcessor.getModelFaces();
+    break;
     default:
     std::cout << "Unknown file format" << '\n';
   }
