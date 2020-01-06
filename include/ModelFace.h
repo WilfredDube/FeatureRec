@@ -289,6 +289,7 @@ public:
 
 };
 
+int ModelFace::nbends = 0;
 // TODO :
 // Fill in all members of each class
 // create bend class
