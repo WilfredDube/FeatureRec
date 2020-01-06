@@ -72,6 +72,14 @@ public:
   }
   ~ModelFace(){}
 
+  void setIsInternal(bool is_internal) {
+    isInternal = is_internal;
+  }
+
+  bool getIsInternal() {
+    return isInternal;
+  }
+
   void setJoiningFaceID1(Standard_Integer face_id) {
     joined_to_faceid1 = face_id;
   }
