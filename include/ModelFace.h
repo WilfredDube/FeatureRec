@@ -116,7 +116,7 @@ public:
   gp_Pnt getNormal(Standard_Integer fid, std::vector<ModelFace> vface){
     gp_Pnt vt(Standard_Real(NULL), Standard_Real(NULL), Standard_Real(NULL));
     for (auto& face : vface) {
-      if (face.getFaceId() == this->face_id) {
+      if (face.getFaceId() == fid) {
         vt = face.getFaceNormal();
       }
     }
