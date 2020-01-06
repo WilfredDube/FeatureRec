@@ -94,7 +94,7 @@ public:
     Curvature = cv;
 
     if (Curvature != 0) {
-      Radius = ((Curvature < 0) ? -(1 / Curvature) : (1 / Curvature));
+      Radius = ((Curvature < 0) ? -(1 / Curvature) : (1 / Curvature)) / 2;
       // std::cout << "Radius : " << Radius <<'\n';
     }
   }
