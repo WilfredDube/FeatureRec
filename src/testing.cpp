@@ -76,6 +76,7 @@ int main(int argc, char const *argv[])
 
   ModelFace::classifyBS_BF(vface);
   ModelFace::classifyFaces(vface);
+  ModelFace::classifyBends(vface);
 
   size_t count = vface.size();
 
