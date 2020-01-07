@@ -1,14 +1,14 @@
 /**
- * \class ModelFace
- *
- * This class describes a face of a model shape. It inherits from the OpenCascade TopoDS_Face
- * class.
- *
- * Contact: wilfreddube@gmail.com
- *
- * Created on: Wed Apr 10 18:39:37 2019
- *
- */
+* \class ModelFace
+*
+* This class describes a face of a model shape. It inherits from the OpenCascade TopoDS_Face
+* class.
+*
+* Contact: wilfreddube@gmail.com
+*
+* Created on: Wed Apr 10 18:39:37 2019
+*
+*/
 
 #pragma once
 #include <TopoDS_Face.hxx>
@@ -18,20 +18,20 @@
 #include "../include/ModelVertex.h"
 
 /**
- * enum PlaneType
- * Classifies faces into PLANAR or NON PLANAR types.
- */
+* enum PlaneType
+* Classifies faces into PLANAR or NON PLANAR types.
+*/
 enum class PlaneType { PLANAR, NON_PLANAR };
 
 /**
- * enum FaceType
- * Identifies various faces. If the face is not Identified yet it has the FaceType value of NONE.
- *  - NONE : no definition
- *  - THICKNESS_DEFINING_FACE : defines the side of the sheetmetal i.e where the thickness is measured.
- *  - BEND_FACE : defines a bend in the model.
- *  - BEND_SIDE : defines the side face of a bend i.e thickness defining face of the bend.
- *  - FACE : defines the face of the model.
- */
+* enum FaceType
+* Identifies various faces. If the face is not Identified yet it has the FaceType value of NONE.
+*  - NONE : no definition
+*  - THICKNESS_DEFINING_FACE : defines the side of the sheetmetal i.e where the thickness is measured.
+*  - BEND_FACE : defines a bend in the model.
+*  - BEND_SIDE : defines the side face of a bend i.e thickness defining face of the bend.
+*  - FACE : defines the face of the model.
+*/
 enum class FaceType { NONE, THICKNESS_DEFINING_FACE, BEND_FACE, BEND_SIDE, FACE };
 
 class ModelFace : public TopoDS_Face{
@@ -108,10 +108,10 @@ public:
   }
 
   /**
- * a normal member taking one argument to set the curvature attribute of the face. If the curvature != 0 then
- * the face is a bend face and so its radius is also set. *
- * @param cv a real/floating point.
- */
+  * a normal member taking one argument to set the curvature attribute of the face. If the curvature != 0 then
+  * the face is a bend face and so its radius is also set. *
+  * @param cv a real/floating point.
+  */
   void setCurvature(Standard_Real cv) {
     Curvature = cv;
 
@@ -146,8 +146,8 @@ public:
   }
 
   /**
- * calculates and sets the D value of the equation of a plane (Ax+By+Cz = D).
- */
+  * calculates and sets the D value of the equation of a plane (Ax+By+Cz = D).
+  */
   void computeFaceEquation(){
     D_element = compute_plane_equation(face_edges, face_normal);
   }
@@ -171,16 +171,16 @@ public:
   }
 
   /**
-   * prints out the unit normal vector of the face.
-   */
+  * prints out the unit normal vector of the face.
+  */
   void printUnitNormal() {
     /* code */
-    // std::cout << "Unit Normal : ("<< face_unit_normal.X()<<", "<< face_unit_normal.Y()<<", "<<face_unit_normal.Z()<< ")\n";
+    std::cout << "Unit Normal : ("<< face_unit_normal.X()<<", "<< face_unit_normal.Y()<<", "<<face_unit_normal.Z()<< ")\n";
   }
 
   void printNormal() {
     /* code */
-    // std::cout << "Unit Normal : ("<< face_normal.X()<<", "<< face_normal.Y()<<", "<<face_normal.Z()<< ")\n";
+    std::cout << "Unit Normal : ("<< face_normal.X()<<", "<< face_normal.Y()<<", "<<face_normal.Z()<< ")\n";
   }
 
   void addEdge(const ModelEdge& n){
@@ -213,37 +213,37 @@ public:
     return face_edges;
   }
 
-/**
- * computes and sets the normal vector of the face.
- */
+  /**
+  * computes and sets the normal vector of the face.
+  */
   void computeFaceNormal(){
     face_normal = compute_normal(this->face_edges);
     // std::cout << "FACE NORM : (" << face_normal.X()<< ", " << face_normal.Y()<< ", " << face_normal.Z() << ")\n";
   }
 
-/**
- * Identifies BEND_FACE and BEND_SIDE faces types.
- * @param faces a list for faces.
- */
+  /**
+  * Identifies BEND_FACE and BEND_SIDE faces types.
+  * @param faces a list for faces.
+  */
   static void classifyBS_BF(std::vector<ModelFace>& faces){
     for (size_t i = 0; i < faces.size(); i++) {
       int arc_edge_cnt = 0;
       switch (faces[i].plane_type) {
         case PlaneType::PLANAR :
-            for (size_t j = 0; j < faces[i].face_edges.size(); j++) {
-              /* If the face is PLANAR check whether there is an ARC edge in the face. */
-              if (faces[i].face_edges[j].getEdgeType() == EdgeType::ARC) {
-                ++arc_edge_cnt; /* count the arcs. */
-              }
+        for (size_t j = 0; j < faces[i].face_edges.size(); j++) {
+          /* If the face is PLANAR check whether there is an ARC edge in the face. */
+          if (faces[i].face_edges[j].getEdgeType() == EdgeType::ARC) {
+            ++arc_edge_cnt; /* count the arcs. */
+          }
 
-              /* If the face has exactly 2 ARC edges then it is a BEND_SIDE face. */
-              if (arc_edge_cnt == 2) {
-                faces[i].setFaceType(FaceType::BEND_SIDE);
-                // std::cout << "BEND_SIDE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
-                arc_edge_cnt = 0;
-                break;
-              }
-            }
+          /* If the face has exactly 2 ARC edges then it is a BEND_SIDE face. */
+          if (arc_edge_cnt == 2) {
+            faces[i].setFaceType(FaceType::BEND_SIDE);
+            // std::cout << "BEND_SIDE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
+            arc_edge_cnt = 0;
+            break;
+          }
+        }
         break;
         case PlaneType::NON_PLANAR : faces[i].setFaceType(FaceType::BEND_FACE);
         // std::cout << "BEND_FACE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
@@ -252,13 +252,13 @@ public:
       }
     }
   }
-/**
- * Identifies FACE and THICKNESS_DEFINING_FACE faces types. Retrieves the BEND_FACE type faces and compares its
- * STRAIGHT_LINE edge type edge to all the PLANAR type face. If there is a matching edge then the bend is connected
- * to that face. The joining face ID is set to the connected face's ID. The connected face's FaceType is also set
- * to FACE.
- * @param faces a list for faces.
- */
+  /**
+  * Identifies FACE and THICKNESS_DEFINING_FACE faces types. Retrieves the BEND_FACE type faces and compares its
+  * STRAIGHT_LINE edge type edge to all the PLANAR type face. If there is a matching edge then the bend is connected
+  * to that face. The joining face ID is set to the connected face's ID. The connected face's FaceType is also set
+  * to FACE.
+  * @param faces a list for faces.
+  */
   static void classifyFaces(std::vector<ModelFace>& faces) {
     size_t count = faces.size();
     // bool done = false;

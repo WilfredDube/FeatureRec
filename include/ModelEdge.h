@@ -59,7 +59,7 @@ public:
 
   void setEdgeLength(Standard_Real len) { edge_length = len; }
   Standard_Real getEdgeLength(){
-    std::cout << "in edge: " << edge_length << '\n';
+    // std::cout << "in edge: " << edge_length << '\n';
     return  edge_length;
   }
 
