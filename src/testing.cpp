@@ -98,7 +98,7 @@ int main(int argc, char const *argv[])
 
   for (size_t i = 0; i < count; i++) {
     if (vface[i].getFaceType() == FaceType::BEND_FACE) {
-      if (vface[i].getIsInternal() == true) {
+      if (vface[i].bend_type == BendType::INTERNAL) {
         gp_Pnt firstnorm = vface[i].getNormal(vface[i].getJoiningFaceID1(), vface);
         gp_Pnt secondnorm = vface[i].getNormal(vface[i].getJoiningFaceID2(), vface);
         vface[i].setBendAngle(compute_angle(firstnorm, secondnorm));
