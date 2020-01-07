@@ -33,6 +33,7 @@ enum class PlaneType { PLANAR, NON_PLANAR };
 *  - FACE : defines the face of the model.
 */
 enum class FaceType { NONE, THICKNESS_DEFINING_FACE, BEND_FACE, BEND_SIDE, FACE };
+enum class BendType { UNASSIGNED = -1, INTERNAL, EXTERNAL };
 
 class ModelFace : public TopoDS_Face{
   Standard_Integer face_id; /*!< an integer value  represents the Face Identification number */
