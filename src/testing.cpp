@@ -105,7 +105,8 @@ int main(int argc, char const *argv[])
         std::cout << "F"<< vface[i].getJoiningFaceID1() << "---B" << vface[i].getFaceId() << "---F" <<vface[i].getJoiningFaceID2()<< " = ";
         std::cout << ", Angle : " << vface[i].getBendAngle();
         std::cout << ", Radius : " << vface[i].getFaceRadius();
-        std::cout << ", Bend Length: " << vface[i].getBendLength()<< " mm" << '\n';
+        std::cout << ", Bend Length: " << vface[i].getBendLength()<< " mm, ";
+        vface[i].printUnitNormal();
       }
     }
   }
