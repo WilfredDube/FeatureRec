@@ -3,6 +3,22 @@
 #include <vector>
 #include "ModelEdge.h"
 
+long double roundd(float var)
+{
+    // we use array of chars to store number
+    // as a string.
+    char str[40];
+
+    // Print in string the value of var
+    // with two decimal point
+    sprintf(str, "%.2f", var);
+
+    // scan string value in var
+    sscanf(str, "%f", &var);
+
+    return var;
+}
+
 gp_Dir
 compute_unit_normal(TopoDS_Face face)
 {
