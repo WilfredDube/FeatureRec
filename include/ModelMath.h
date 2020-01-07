@@ -161,14 +161,13 @@ compute_angle(gp_Pnt n1, gp_Pnt n2)
     cosine = 0;
   } else {
     cosine = dotp / (en1 * en2);
-    // cout << "Dot product : " << en2 << endl;
   }
 
   long double value = 180.0 / PI;
 
-
-  return angle;
   angle = acos(roundd(cosine)) * value;
+  
+  return round(angle);
 }
 
 gp_Pnt
