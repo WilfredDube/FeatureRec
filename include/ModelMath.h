@@ -166,9 +166,9 @@ compute_angle(gp_Pnt n1, gp_Pnt n2)
 
   long double value = 180.0 / PI;
 
-  angle = acos(cosine) * value;
 
   return angle;
+  angle = acos(roundd(cosine)) * value;
 }
 
 gp_Pnt
