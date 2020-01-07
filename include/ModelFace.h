@@ -310,6 +310,37 @@ public:
     }
   }
 
+  static void classifyBends(std::vector<ModelFace>& v){
+    size_t nb = nbends;
+
+    for (size_t i = 0; i < v.size(); i++) {
+      if (v[i].getFaceType() == FaceType::BEND_FACE) {
+        ModelFace *b = &v[i];
+        for (size_t j = 0; j <= nb - 1; j++) {
+          if(b->face_id != v[i + j].face_id){
+            if (b->bend_type == BendType::UNASSIGNED && v[i + j].bend_type == BendType::UNASSIGNED) {
+              if (b->bend_angle == v[i + j].bend_angle) {
+                if (compute_angle(b->getFaceNormal(), v[i + j].getFaceNormal()) ==  180) {
+                  if (b->Radius < v[i + j].Radius) {
+                    b->bend_type = BendType::INTERNAL;
+                    v[i + j].bend_type = BendType::EXTERNAL;
+                    std::cout << b->face_id << " - " << v[i + j].face_id << "  ";
+                    std::cout << b->Radius << " < " << v[i + j].Radius << '\n';
+                  } else {
+                    b->bend_type = BendType::EXTERNAL;
+                    v[i + j].bend_type = BendType::INTERNAL;
+                    std::cout << b->face_id << " - " << v[i + j].face_id << "  ";
+                    std::cout << b->Radius << " > " << v[i + j].Radius << '\n';
+                  }
+                }
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 };
 
 int ModelFace::nbends = 0;
