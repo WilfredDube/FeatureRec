@@ -78,6 +78,8 @@ int main(int argc, char const *argv[])
   ModelFace::classifyFaces(vface);
   ModelFace::classifyBends(vface);
 
+  // std::cout << "Face iiiiid: " << vface[0].getFaceId() << '\n';
+
   size_t count = vface.size();
 
   std::sort(vface.begin(), vface.end(), [ ]( const auto& lhs, const auto& rhs )
@@ -105,6 +107,7 @@ int main(int argc, char const *argv[])
         std::cout << "F"<< vface[i].getJoiningFaceID1() << "---B" << vface[i].getFaceId() << "---F" <<vface[i].getJoiningFaceID2()<< " = ";
         std::cout << ", Angle : " << vface[i].getBendAngle();
         std::cout << ", Radius : " << vface[i].getFaceRadius();
+        // std::cout << ", Dot product: " << compute_dot_product(&gp_Pnt(0, 1, 0), &gp_Pnt(3.60355e-16, -1, 0));
         std::cout << ", Bend Length: " << vface[i].getBendLength()<< " mm, ";
         vface[i].printUnitNormal();
       }

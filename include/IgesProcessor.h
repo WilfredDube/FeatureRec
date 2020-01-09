@@ -43,7 +43,7 @@ public:
       test->setBendLength(test->getFaceEdges());
       test->computeFaceNormal();
       test->computeFaceEquation();
-      test->printUnitNormal();
+      // test->printUnitNormal();
       vface.push_back(*test);
       tvfaces.push_back(face);
     }
