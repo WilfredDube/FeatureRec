@@ -55,6 +55,7 @@ class ModelFace : public TopoDS_Face{
   ModelEdge imaginary_bend_line;
   Standard_Real bending_force; //!< force required to create the bend.
   Standard_Real bend_angle; //!< bend angle.
+  unsigned long bend_same_as_id;
 
   std::vector<ModelEdge> face_edges; //!< edges of the face.
   std::vector<ModelEdge> parallel_face_edges; //!< edges of the parallel face.
@@ -182,7 +183,7 @@ public:
 
   void printNormal() {
     /* code */
-    std::cout << "Unit Normal : ("<< face_normal.X()<<", "<< face_normal.Y()<<", "<<face_normal.Z()<< ")\n";
+    // std::cout << "Unit Normal : ("<< face_normal.X()<<", "<< face_normal.Y()<<", "<<face_normal.Z()<< ")\n";
   }
 
   void addEdge(const ModelEdge& n){
@@ -314,24 +315,34 @@ public:
     size_t nb = nbends;
 
     for (size_t i = 0; i < v.size(); i++) {
+      // cout << "FFFFFFF : " << v[i].face_id << endl;
       if (v[i].getFaceType() == FaceType::BEND_FACE) {
         ModelFace *b = &v[i];
-        for (size_t j = 0; j <= nb - 1; j++) {
-          if(b->face_id != v[i + j].face_id){
-            if (b->bend_type == BendType::UNASSIGNED && v[i + j].bend_type == BendType::UNASSIGNED) {
-              if (b->bend_angle == v[i + j].bend_angle) {
-                if (compute_angle(b->getFaceNormal(), v[i + j].getFaceNormal()) ==  180) {
-                  if (b->Radius < v[i + j].Radius) {
+        for (size_t j = 0; j < v.size(); j++) {
+          if (v[j].getFaceType() == FaceType::BEND_FACE)
+          if(b->face_id != v[j].face_id){
+            if (b->Radius != v[j].Radius)
+            if (b->bend_type == BendType::UNASSIGNED && v[j].bend_type == BendType::UNASSIGNED) {
+              if (b->bend_angle == v[j].bend_angle) {
+                if (compute_angle(b->getFaceNormal(), v[j].getFaceNormal()) ==  180) {
+                  if (b->Radius < v[j].Radius) {
                     b->bend_type = BendType::INTERNAL;
-                    v[i + j].bend_type = BendType::EXTERNAL;
-                    std::cout << b->face_id << " - " << v[i + j].face_id << "  ";
-                    std::cout << b->Radius << " < " << v[i + j].Radius << '\n';
+                    v[j].bend_type = BendType::EXTERNAL;
+                    b->bend_same_as_id = v[j].face_id;
+                    v[j].bend_same_as_id = b->face_id;
+                    thickness = fabsl(roundd(v[j].Radius) - roundd(b->Radius));
+                    // std::cout << b->face_id << " - " << v[j].face_id << "  ";
+                    // std::cout << setprecision(10) << b->Radius << " < " << v[j].Radius << '\n';
                   } else {
                     b->bend_type = BendType::EXTERNAL;
-                    v[i + j].bend_type = BendType::INTERNAL;
-                    std::cout << b->face_id << " - " << v[i + j].face_id << "  ";
-                    std::cout << b->Radius << " > " << v[i + j].Radius << '\n';
+                    v[j].bend_type = BendType::INTERNAL;
+                    b->bend_same_as_id = v[j].face_id;
+                    v[j].bend_same_as_id = b->face_id;
+                    thickness = fabsl(roundd(b->Radius) - roundd(v[j].Radius));
+                    // std::cout << b->face_id << " - " << v[j].face_id << "  ";
+                    // std::cout << b->Radius << " > " << v[j].Radius << '\n';
                   }
+                  // cout << compute_angle(b->getFaceNormal(), v[j].getFaceNormal()) << endl;
                 }
                 break;
               }
@@ -340,7 +351,38 @@ public:
         }
       }
     }
+
+    // for (size_t i = 0; i < v.size(); i++) {
+    //   if (v[i].getFaceType() == FaceType::BEND_FACE) {
+    //     // cout << "Joing face : " << v[i].getJoiningFaceID1() << endl;
+    //     // cout << "Same as : " << v[i].bend_same_as_id << endl;
+    //     // cout << "Joing face : " << v[i].getJoiningFaceID2() << endl;
+    //     // ModelFace *b = &v[i];
+    //
+    //     if (findBendType(v, i, nbends, v.size(), v[i].getJoiningFaceID1()) == BendType::INTERNAL &&
+    //         findBendType(v, i, nbends, v.size(), v[i].getJoiningFaceID2()) == BendType::INTERNAL){
+    //           cout << "Internal " << endl;
+    //           v[i].bend_type = BendType::INTERNAL;
+    //     } else if (findBendType(v, i, nbends, v.size(), v[i].getJoiningFaceID1()) == BendType::EXTERNAL &&
+    //         findBendType(v, i, nbends, v.size(), v[i].getJoiningFaceID2()) == BendType::EXTERNAL){
+    //           v[i].bend_type = BendType::EXTERNAL;
+    //           cout << "external " << endl;
+    //     }
+    //   }
+    // }
   }
+
+  // static BendType findBendType(std::vector<ModelFace>& v, size_t start_pos, size_t n, size_t s, Standard_Integer search_id){
+  //   BendType btype;
+  //   for (size_t i = 0; i < s; i++) {
+  //     if (v[i].getJoiningFaceID1() == search_id || v[i].getJoiningFaceID2() == search_id) {
+  //       btype = v[i].bend_type;
+  //       break;
+  //     }
+  //   }
+  //
+  //   return btype;
+  // }
 };
 
 int ModelFace::nbends = 0;
