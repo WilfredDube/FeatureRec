@@ -40,7 +40,6 @@ class ModelFace : public TopoDS_Face{
   PlaneType plane_type;
   FaceType face_type;
   Standard_Real Curvature; //!< face curvature value : zero for planar type faces and non-zero for non-planar type faces.
-  Standard_Real thickness; //!< thickness of the face.
   Standard_Real D_element; //!< represents the D value in the equation of the plane. Ax+By+Cz = D
   gp_Pnt face_normal; //!< the normal vector to the face.
   gp_Dir face_unit_normal; //!< the unit normal vector to the face.
@@ -63,6 +62,7 @@ class ModelFace : public TopoDS_Face{
 public:
   BendType bend_type;
   static int nbends;
+  static Standard_Real thickness; //!< thickness of the face.
   Standard_Real Radius; //!< bend radius : zero if face is planar and non-zero if face is a bend.
   ModelFace(Standard_Integer fid, PlaneType planetype): isInternal(false), bend_length(0), bend_type(BendType::UNASSIGNED){
     face_id = fid;
@@ -344,6 +344,7 @@ public:
 };
 
 int ModelFace::nbends = 0;
+Standard_Real ModelFace::thickness;
 // TODO :
 // Fill in all members of each class
 // create bend class
