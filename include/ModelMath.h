@@ -28,6 +28,8 @@ compute_unit_normal(TopoDS_Face face)
   GeomLProp_SLProps props(surf, umin, vmin, 1, 0.01); // get surface normal
   gp_Dir norm=props.Normal(); // check orientation
 
+  norm = gp_Dir(roundd(norm.X()), roundd(norm.Y()), roundd(norm.Z()));
+
   return norm;
 }
 
