@@ -1,3 +1,3 @@
 # FeatureRec
 
-Prototype for a Feature Recognition System.
+Prototype for a CAD model Feature Recognition System.
