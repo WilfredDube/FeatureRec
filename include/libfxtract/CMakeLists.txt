@@ -13,6 +13,8 @@ set(fxtract_source_files
    ModelEdge.h
    ModelVertex.cpp
    ModelVertex.h
+   ModelProcessor.cpp
+   ModelProcessor.h
    StepProcessor.cpp
    StepProcessor.h
    IgesProcessor.cpp
