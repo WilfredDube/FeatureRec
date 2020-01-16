@@ -26,9 +26,7 @@ void IgesProcessor::extractFeactures(XSControl_Reader reader) {
     test->computeFaceNormal();
     test->computeFaceEquation();
     // test->printUnitNormal();
-    vface.push_back(*test);
-    tvfaces.push_back(face);
+    addFace(*test);
+    addTopoDSFace(face);
   }
 }
-
-std::vector<ModelFace> IgesProcessor::getModelFaces(){ return vface; }

@@ -30,12 +30,10 @@ void StepProcessor::extractFeactures(XSControl_Reader reader) {
       test->setBendLength(test->getFaceEdges());
       test->computeFaceNormal();
       test->computeFaceEquation();
-      vface.push_back(*test);
-      tvfaces.push_back(face);
+      addFace(*test);
+      addTopoDSFace(face);
 
       myFaceExplorer.Next();
     }
   }
 }
-
-std::vector<ModelFace> StepProcessor::getModelFaces(){ return vface; }
