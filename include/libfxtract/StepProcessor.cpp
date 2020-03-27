@@ -2,7 +2,7 @@
 
 void StepProcessor::extractFeactures(XSControl_Reader reader) {
   TopoDS_Shape aShape;
-  size_t p = 0, j = 0;
+  size_t p = 0, j = 0, nfaces = 0, nbends = 0;
 
   Standard_Integer nbs = reader.NbShapes();
 
@@ -18,10 +18,11 @@ void StepProcessor::extractFeactures(XSControl_Reader reader) {
 
       ++p;
       Standard_Real curvature = compute_curvature(face);
-      if (curvature == 0.0){
       if (roundd(curvature) == 0.0){
+        ++nfaces;
         test = new ModelFace(p, PlaneType::PLANAR);
       } else {
+        ++nbends;
         test = new ModelFace(p, PlaneType::NON_PLANAR);
       }
 
