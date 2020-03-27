@@ -104,6 +104,7 @@ public:
   void setNumEdges(size_t nEdges);
   size_t getNumEdges();
   std::vector<ModelEdge> getFaceEdges();
+  ModelEdge getFaceEdgesAt(int i);
   void computeFaceNormal();
 
   static void classifyBS_BF(std::vector<ModelFace>& faces);

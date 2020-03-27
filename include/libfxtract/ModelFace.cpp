@@ -170,6 +170,11 @@ std::vector<ModelEdge> ModelFace::getFaceEdges(){
   return face_edges;
 }
 
+ModelEdge ModelFace::getFaceEdgesAt(int i){
+  // std::cout << "Len : " << face_edges[i].getEdgeLength() << '\n';
+  return face_edges[i];
+}
+
 /**
 * computes and sets the normal vector of the face.
 */
