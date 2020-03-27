@@ -13,17 +13,21 @@
 
 using namespace std;
 
-class ModelProcessor
-{
-  std::vector<ModelFace> vface;
-  std::vector<TopoDS_Face> tvfaces;
+namespace Fxt {
 
-public:
-  virtual void extractFeactures(XSControl_Reader reader) = 0;
+  class ModelProcessor
+  {
+    std::vector<ModelFace> vface;
+    std::vector<TopoDS_Face> tvfaces;
 
-  std::vector<ModelFace> getModelFaces();
-  void addFace(ModelFace& face);
-  void addTopoDSFace(TopoDS_Face face);
-};
+  public:
+    virtual void extractFeactures(XSControl_Reader reader) = 0;
+
+    std::vector<ModelFace> getModelFaces();
+    void addFace(ModelFace& face);
+    void addTopoDSFace(TopoDS_Face face);
+  };
+
+}
 
 #endif // MODEL_PROCESSOR_H_

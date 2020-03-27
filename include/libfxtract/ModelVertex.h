@@ -8,10 +8,13 @@
 #include <TopoDS.hxx>
 #include <vector>
 
-class ModelVertex
-{
-public:
-  std::vector<gp_Pnt> getEdgeEndPoints(TopoDS_Edge edge);
-};
+namespace Fxt {
 
+  class ModelVertex
+  {
+  public:
+    std::vector<gp_Pnt> getEdgeEndPoints(TopoDS_Edge edge);
+  };
+
+}
 #endif // MODEL_VERTEX_H_

@@ -14,6 +14,8 @@
 // #include "../include/db/BendFeature.h"
 // #include "../include/config/Session.h"
 
+using namespace Fxt;
+
 namespace dbo=Wt::Dbo;
 
 std::unique_ptr<Wt::WApplication> createApplication(const Wt::WEnvironment& env,

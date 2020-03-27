@@ -50,19 +50,20 @@ gcc -Wall -I /usr/local/include/opencascade/ -L/usr/local/lib/ -lTKIGES -lTKSTEP
 valgrind ./test ../model\ test\ files/new/90.IGS --track-origins=yes --leak-check=full
 
 */
+namespace Fxt {
 
-static const std::string DB_FOLDER = "../../src/";
+  static const std::string DB_FOLDER = "../../src/";
 
-class ModelApp {
-  // dbo::SqlConnectionPool& connectionPool_;
-  Session& session_;
-public:
-  // ModelApp(dbo::SqlConnectionPool& connectionPool);
-  ModelApp(Session& session);
-  ~ModelApp();
+  class ModelApp {
+    // dbo::SqlConnectionPool& connectionPool_;
+    Session& session_;
+  public:
+    // ModelApp(dbo::SqlConnectionPool& connectionPool);
+    ModelApp(Session& session);
+    ~ModelApp();
 
-  // static
-  int run(char const *modelFile, dbo::ptr<ModelFile> p);
-};
-
+    // static
+    int run(char const *modelFile, dbo::ptr<ModelFile> p);
+  };
+}
 #endif // MODEL_APP_H_

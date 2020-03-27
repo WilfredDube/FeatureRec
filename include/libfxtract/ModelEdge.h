@@ -25,62 +25,66 @@
 
 const int EDGE_NUM = -1;
 
-enum class EdgeType { DEFAULT = -1, LINE, ARC };
-enum class EdgePosition { DEFAULT = -1, JOINING_EDGE, SIDE_EDGE, DISJOINT_EDGE };
+namespace Fxt {
 
-class ModelEdge
-{
-  int count;
-  Standard_Integer edge_number;
-  EdgeType edge_type;
-  EdgePosition edge_position;
-  gp_Pnt line_vector;
-  gp_Pnt line_unit_vector;
-  Standard_Real edge_length;
-  bool isrational;
-  Standard_Integer same_as_edge_number;
-  TopoDS_Edge edge;
-public:
-  gp_Pnt start_vertex;
-  gp_Pnt terminate_vertex;
-  // bool isjoining_edge;
-  // bool isside_edge;
-  // bool isdisjoint_edge;
+  enum class EdgeType { DEFAULT = -1, LINE, ARC };
+  enum class EdgePosition { DEFAULT = -1, JOINING_EDGE, SIDE_EDGE, DISJOINT_EDGE };
 
-  ModelEdge(std::vector<gp_Pnt> startv);
-  ModelEdge(){}
-  ~ModelEdge(){}
+  class ModelEdge
+  {
+    int count;
+    Standard_Integer edge_number;
+    EdgeType edge_type;
+    EdgePosition edge_position;
+    gp_Pnt line_vector;
+    gp_Pnt line_unit_vector;
+    Standard_Real edge_length;
+    bool isrational;
+    Standard_Integer same_as_edge_number;
+    TopoDS_Edge edge;
+  public:
+    gp_Pnt start_vertex;
+    gp_Pnt terminate_vertex;
+    // bool isjoining_edge;
+    // bool isside_edge;
+    // bool isdisjoint_edge;
 
-  void setIsRational(bool is_it);
-  bool IsRational();
-  // void setIsJoiningEdge(bool is_it) { isjoining_edge = is_it;  }
-  // void setIsSideEdge(bool is_it) { isside_edge = is_it;  }
-  // void setIsDisjointEdge(bool is_it) { isdisjoint_edge = is_it;  }
+    ModelEdge(std::vector<gp_Pnt> startv);
+    ModelEdge(){}
+    ~ModelEdge(){}
 
-  void setEdge(TopoDS_Edge edge);
-  TopoDS_Edge getEdge();
+    void setIsRational(bool is_it);
+    bool IsRational();
+    // void setIsJoiningEdge(bool is_it) { isjoining_edge = is_it;  }
+    // void setIsSideEdge(bool is_it) { isside_edge = is_it;  }
+    // void setIsDisjointEdge(bool is_it) { isdisjoint_edge = is_it;  }
 
-  void setEdgeNum(Standard_Integer enumb);//std::cout << edge_number << ": ";  }
-  Standard_Integer getEdgeNum() const;
+    void setEdge(TopoDS_Edge edge);
+    TopoDS_Edge getEdge();
 
-  void setEdgeType(GeomAbs_CurveType type);
-  EdgeType getEdgeType();
+    void setEdgeNum(Standard_Integer enumb);//std::cout << edge_number << ": ";  }
+    Standard_Integer getEdgeNum() const;
 
-  void setEdgePosition(EdgePosition epos);
-  EdgePosition getEdgePosition();
+    void setEdgeType(GeomAbs_CurveType type);
+    EdgeType getEdgeType();
 
-  void setEdgeLength(Standard_Real len);
-  Standard_Real getEdgeLength();
+    void setEdgePosition(EdgePosition epos);
+    EdgePosition getEdgePosition();
 
-  void setLineVector(gp_Pnt l_vector);
-  gp_Pnt getLineVector();
+    void setEdgeLength(Standard_Real len);
+    Standard_Real getEdgeLength();
 
-  void setLineUnitVector(gp_Pnt lu_vector);
-  gp_Pnt getLineUnitVector();
+    void setLineVector(gp_Pnt l_vector);
+    gp_Pnt getLineVector();
 
-  static bool compare_edges(ModelEdge edge1, ModelEdge edge2);
+    void setLineUnitVector(gp_Pnt lu_vector);
+    gp_Pnt getLineUnitVector();
 
-  static bool compare_vl(gp_Pnt v1, gp_Pnt v2);
-};
+    static bool compare_edges(ModelEdge edge1, ModelEdge edge2);
+
+    static bool compare_vl(gp_Pnt v1, gp_Pnt v2);
+  };
+
+}
 
 #endif // MODEL_EDGE_H_

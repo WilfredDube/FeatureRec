@@ -8,15 +8,18 @@
 
 using namespace std;
 
-enum class FileFormat{ UNKNOWN_FORMAT, IGES_FORMAT, STEP_FORMAT };
+namespace Fxt {
 
-class ModelReader
-{
-public:
-  FileFormat checkFileFormat(string filename);
-  XSControl_Reader processModelFile(FileFormat fileFormat, const char* filename);
-  IGESControl_Reader processIgesFile(const char* igesFile);
-  STEPControl_Reader processStepFile(const char* stepFile);
-};
+  enum class FileFormat{ UNKNOWN_FORMAT, IGES_FORMAT, STEP_FORMAT };
 
+  class ModelReader
+  {
+  public:
+    FileFormat checkFileFormat(string filename);
+    XSControl_Reader processModelFile(FileFormat fileFormat, const char* filename);
+    IGESControl_Reader processIgesFile(const char* igesFile);
+    STEPControl_Reader processStepFile(const char* stepFile);
+  };
+
+}
 #endif // MODEL_READER_H_

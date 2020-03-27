@@ -12,19 +12,20 @@
 #include "../db/BendFeature.h"
 
 using namespace Wt;
-
 namespace dbo=Wt::Dbo;
 
-class Session : public dbo::Session
-{
-  dbo::SqlConnectionPool& connectionPool_;
-public:
-  Session(dbo::SqlConnectionPool& connectionPool);
-  ~Session();
+namespace Fxt {
 
-  void fillTools();
-  static std::unique_ptr<dbo::SqlConnectionPool> createConnectionPool(const std::string& sqlite3);
-};
+  class Session : public dbo::Session
+  {
+    dbo::SqlConnectionPool& connectionPool_;
+  public:
+    Session(dbo::SqlConnectionPool& connectionPool);
+    ~Session();
 
+    void fillTools();
+    static std::unique_ptr<dbo::SqlConnectionPool> createConnectionPool(const std::string& sqlite3);
+  };
+}
 
 #endif // SESSION_H_

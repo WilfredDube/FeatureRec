@@ -1,51 +1,55 @@
 #include "StepProcessor.h"
 
-void StepProcessor::extractFeactures(XSControl_Reader reader) {
-  TopoDS_Shape aShape;
-  size_t p = 0, j = 0, nfaces = 0, nbends = 0;
+namespace Fxt {
 
-  Standard_Integer nbs = reader.NbShapes();
+  void StepProcessor::extractFeactures(XSControl_Reader reader) {
+    TopoDS_Shape aShape;
+    size_t p = 0, j = 0, nfaces = 0, nbends = 0;
 
-  for (Standard_Integer i=1; i<=nbs; i++, ++j) {
-    aShape = reader.Shape(i);
-    TopExp_Explorer myFaceExplorer(aShape, TopAbs_FACE);
+    Standard_Integer nbs = reader.NbShapes();
 
-    while (myFaceExplorer.More())
-    {
-      TopoDS_Shape shape = myFaceExplorer.Current();
-      TopoDS_Face face = TopoDS::Face(shape);
-      ModelFace *test;
+    for (Standard_Integer i=1; i<=nbs; i++, ++j) {
+      aShape = reader.Shape(i);
+      TopExp_Explorer myFaceExplorer(aShape, TopAbs_FACE);
 
-      ++p;
-      Standard_Real curvature = compute_curvature(face);
-      if (roundd(curvature) == 0.0){
-        ++nfaces;
-        test = new ModelFace(p, PlaneType::PLANAR);
-      } else {
-        ++nbends;
-        test = new ModelFace(p, PlaneType::NON_PLANAR);
+      while (myFaceExplorer.More())
+      {
+        TopoDS_Shape shape = myFaceExplorer.Current();
+        TopoDS_Face face = TopoDS::Face(shape);
+        ModelFace *test;
+
+        ++p;
+        Standard_Real curvature = compute_curvature(face);
+        if (roundd(curvature) == 0.0){
+          ++nfaces;
+          test = new ModelFace(p, PlaneType::PLANAR);
+        } else {
+          ++nbends;
+          test = new ModelFace(p, PlaneType::NON_PLANAR);
+        }
+
+        test->setUnitNormal(compute_unit_normal(face));
+        test->setCurvature(curvature);
+        test->extractEdges(face);
+        test->setBendLength(test->getFaceEdges());
+        test->computeFaceNormal();
+        test->computeFaceEquation();
+        // test->setTopoDSFace(face);
+        addFace(*test);
+        addTopoDSFace(face);
+
+        if (test->getPlaneType() == PlaneType::NON_PLANAR){
+          // std::cout << "B"<< p;
+        }
+        // BRepAdaptor_Surface faceDir = BRepAdaptor_Surface(face, Standard_False);
+        // gp_Dir dir = faceDir.Direction();
+        // std::cout << " Orientation : " << face.Orientation() << " for Face ID : " << p << '\n';
+
+        myFaceExplorer.Next();
       }
-
-      test->setUnitNormal(compute_unit_normal(face));
-      test->setCurvature(curvature);
-      test->extractEdges(face);
-      test->setBendLength(test->getFaceEdges());
-      test->computeFaceNormal();
-      test->computeFaceEquation();
-      // test->setTopoDSFace(face);
-      addFace(*test);
-      addTopoDSFace(face);
-
-      if (test->getPlaneType() == PlaneType::NON_PLANAR){
-        // std::cout << "B"<< p;
-      }
-      // BRepAdaptor_Surface faceDir = BRepAdaptor_Surface(face, Standard_False);
-      // gp_Dir dir = faceDir.Direction();
-      // std::cout << " Orientation : " << face.Orientation() << " for Face ID : " << p << '\n';
-
-      myFaceExplorer.Next();
     }
+
+    std::cout << "Number of faces : " << nfaces << " Number of bends: " << nbends << '\n';
   }
 
-  std::cout << "Number of faces : " << nfaces << " Number of bends: " << nbends << '\n';
 }

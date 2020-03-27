@@ -22,7 +22,11 @@
 #include <TopExp_Explorer.hxx>
 #include <Interface_Static.hxx>
 
-void printType(GeomAbs_CurveType curvetype);
-void printShapeType(TopAbs_ShapeEnum shapetype);
+namespace Fxt {
+
+  void printType(GeomAbs_CurveType curvetype);
+  void printShapeType(TopAbs_ShapeEnum shapetype);
+
+}
 
 #endif // MODEL_UTILS_H_

@@ -6,10 +6,14 @@
 
 using namespace std;
 
-class StepProcessor : public ModelProcessor
-{
-public:
-  void extractFeactures(XSControl_Reader reader);
-};
+namespace Fxt {
+
+  class StepProcessor : public ModelProcessor
+  {
+  public:
+    void extractFeactures(XSControl_Reader reader);
+  };
+
+}
 
 #endif // STEP_PROCESSOR_H_

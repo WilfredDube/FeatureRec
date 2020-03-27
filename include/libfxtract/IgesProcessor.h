@@ -6,10 +6,12 @@
 
 using namespace std;
 
-class IgesProcessor : public ModelProcessor
-{
-public:
-  void extractFeactures(XSControl_Reader reader);
-};
+namespace Fxt {
 
+  class IgesProcessor : public ModelProcessor
+  {
+  public:
+    void extractFeactures(XSControl_Reader reader);
+  };
+}
 #endif // IGES_PROCESSOR_H_
