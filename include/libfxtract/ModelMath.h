@@ -2,6 +2,9 @@
 #include <cmath>
 #include <vector>
 #include "ModelEdge.h"
+#include "ModelFace.h"
+
+class ModelFace;
 
 const Standard_Real PI = 3.14159265358979323;
 
@@ -18,3 +21,4 @@ long double compute_dot_product(gp_Pnt *vt1, gp_Pnt *vt2);
 long double compute_length(ModelEdge *edge);
 long double compute_angle(gp_Pnt n1, gp_Pnt n2);
 gp_Pnt compute_normal(std::vector<ModelEdge> edges);
+Standard_Real compute_thickness(ModelFace face);

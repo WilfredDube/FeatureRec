@@ -30,6 +30,22 @@ compute_unit_normal(TopoDS_Face face)
   return norm;
 }
 
+
+Standard_Real
+compute_thickness(ModelFace face)
+{
+  size_t count = face.getFaceEdges().size();
+  Standard_Real smallest = face.getFaceEdgesAt(0).getEdgeLength();
+
+  for (size_t i = 0; i < count; i++) {
+    if (smallest > face.getFaceEdgesAt(i).getEdgeLength()) {
+      smallest = face.getFaceEdgesAt(i).getEdgeLength();
+    }
+  }
+
+  return smallest;
+}
+
 Standard_Real
 compute_curvature(TopoDS_Face face)
 {
