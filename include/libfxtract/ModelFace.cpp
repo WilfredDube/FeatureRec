@@ -167,6 +167,10 @@ void ModelFace::extractEdges(TopoDS_Face face) {
     addEdge(edgex);
   }
 
+  setNumEdges(edge_n);
+  // std::cout << "Number of edges: " << edge_n << '\n';
+}
+
 void ModelFace::setNumEdges(size_t nEdges){
   num_edges = nEdges;
 }
