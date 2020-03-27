@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MODEL_READER_H_
+#define MODEL_READER_H_
+
 #include <IGESControl_Reader.hxx>
 #include <STEPControl_Reader.hxx>
 #include <XSControl_Reader.hxx>
@@ -8,7 +10,7 @@ using namespace std;
 
 enum class FileFormat{ UNKNOWN_FORMAT, IGES_FORMAT, STEP_FORMAT };
 
-class ModelReaderClass
+class ModelReader
 {
 public:
   FileFormat checkFileFormat(string filename);
@@ -16,3 +18,5 @@ public:
   IGESControl_Reader processIgesFile(const char* igesFile);
   STEPControl_Reader processStepFile(const char* stepFile);
 };
+
+#endif // MODEL_READER_H_

@@ -1,6 +1,6 @@
-#include "ModelReaderClass.h"
+#include "ModelReader.h"
 
-FileFormat ModelReaderClass::checkFileFormat(string filename){
+FileFormat ModelReader::checkFileFormat(string filename){
   if (filename.find("igs") != std::string::npos || filename.find("iges") != std::string::npos) {
     return FileFormat::IGES_FORMAT;
   } else if (filename.find("step") != std::string::npos || filename.find("stp") != std::string::npos) {
@@ -10,7 +10,7 @@ FileFormat ModelReaderClass::checkFileFormat(string filename){
   return FileFormat::UNKNOWN_FORMAT;
 }
 
-XSControl_Reader ModelReaderClass::processModelFile(FileFormat fileFormat, const char* filename)
+XSControl_Reader ModelReader::processModelFile(FileFormat fileFormat, const char* filename)
 {
   switch (fileFormat) {
     case FileFormat::IGES_FORMAT:
@@ -24,7 +24,7 @@ XSControl_Reader ModelReaderClass::processModelFile(FileFormat fileFormat, const
   return NULL;
 }
 
-IGESControl_Reader ModelReaderClass::processIgesFile(const char* igesFile){
+IGESControl_Reader ModelReader::processIgesFile(const char* igesFile){
   IGESControl_Reader myIgesReader;
 
   myIgesReader.ReadFile (igesFile);
@@ -44,7 +44,7 @@ IGESControl_Reader ModelReaderClass::processIgesFile(const char* igesFile){
   return myIgesReader;
 }
 
-STEPControl_Reader ModelReaderClass::processStepFile(const char* stepFile){
+STEPControl_Reader ModelReader::processStepFile(const char* stepFile){
   STEPControl_Reader myStepReader;
 
   myStepReader.ReadFile(stepFile);
