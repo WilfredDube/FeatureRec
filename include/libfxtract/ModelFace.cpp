@@ -275,11 +275,19 @@ void ModelFace::classifyFaces(std::vector<ModelFace>& faces) {
 
   }
   /* For the unclassified faces set their type to THICKNESS_DEFINING_FACE */
-  for (size_t i = 0; i < count; i++) {
+  for (size_t i = 0, fid = 0; i < count; i++) {
     if (faces[i].face_type == FaceType::NONE) {
       // std::cerr << "THICKNESS_DEFINING_FACE" << '\n';
       faces[i].setFaceType(FaceType::THICKNESS_DEFINING_FACE);
+      thickness = compute_thickness(faces[i]);
+      faces[i].setFaceId(-1);
     }
+
+    // if (faces[i].face_type == FaceType::FACE) {
+    //   ++fid;
+    //   std::cout << "/* message */" << fid << '\n';
+    //   faces[i].setFaceId(fid);
+    // }
   }
 }
 
