@@ -19,12 +19,60 @@ TopoDS_Edge ModelEdge::getEdge(){ return this->edge; }
 void ModelEdge::setEdgeNum(Standard_Integer enumb){  edge_number = enumb; }//std::cout << edge_number << ": ";  }
 Standard_Integer ModelEdge::getEdgeNum() const { return edge_number; }
 
-void ModelEdge::setEdgeType(){
-  if (IsRational() == true) {
-    edge_type = EdgeType::ARC;
-  } else {
+void ModelEdge::setEdgeType(GeomAbs_CurveType type){
+  switch (type) {
+    case GeomAbs_Line:
+    // std::cout << "Line" << '\n';
     edge_type = EdgeType::LINE;
+    break;
+    case GeomAbs_Circle:
+    // std::cout << "Circle" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_Ellipse:
+    // std::cout << "Ellipse" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_Hyperbola:
+    // std::cout << "Hyperbola" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_Parabola:
+    // std::cout << "Parabola" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_BezierCurve:
+    // std::cout << "BezierCurve" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_BSplineCurve:
+    // std::cout << "BSplineCurve" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_OffsetCurve:
+    // std::cout << "OffsetCurve" << '\n';
+    edge_type = EdgeType::ARC;
+    break;
+    case GeomAbs_OtherCurve:
+    default:
+    // std::cout << "OtherCurve" << '\n';
+    edge_type = EdgeType::ARC;
   }
+  // if (type >= 1) {
+  //
+  //   std::cout << "Circle" << '\n';
+  //   edge_type = EdgeType::ARC;
+  //
+    if (type == GeomAbs_BSplineCurve ) {
+      if (IsRational() != true)
+      {
+        // std::cout << "BSpline" << '\n';
+        edge_type = EdgeType::LINE;
+      }
+    }
+  // } else {
+  //   edge_type = EdgeType::LINE;
+  // }
 }
 
 EdgeType ModelEdge::getEdgeType(){ return edge_type; }

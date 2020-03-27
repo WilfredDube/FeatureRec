@@ -61,7 +61,7 @@ public:
   void setEdgeNum(Standard_Integer enumb);//std::cout << edge_number << ": ";  }
   Standard_Integer getEdgeNum() const;
 
-  void setEdgeType();
+  void setEdgeType(GeomAbs_CurveType type);
   EdgeType getEdgeType();
 
   void setEdgePosition(EdgePosition epos);
