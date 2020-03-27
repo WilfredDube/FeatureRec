@@ -150,8 +150,17 @@ void ModelFace::extractEdges(TopoDS_Face face) {
     ++edge_n;
     edgex.setEdge(edge);
     edgex.setEdgeNum(edge_n);
+    if (edge_n > 4) {
+      /* code */
+    }
+
     edgex.setIsRational(BRepAdaptor_Curve(edge).IsRational());
-    edgex.setEdgeType();
+    BRepAdaptor_Curve curve = BRepAdaptor_Curve(edge);
+    // Handle_Geom_BSplineCurve spline = curve.BSpline();
+    //
+    // std::cout << "Type: " << BRepAdaptor_Curve(edge).GetType()<< '\n';
+    // std::cout << "Rational: " << BRepAdaptor_Curve(edge).IsRational() << '\n';
+    edgex.setEdgeType(BRepAdaptor_Curve(edge).GetType());
     edgex.setEdgeLength(compute_length(&edgex));
     edgex.setLineVector(compute_line_vector(&edgex));
     edgex.setLineUnitVector(compute_line_unit_vector(edgex.getLineVector()));
