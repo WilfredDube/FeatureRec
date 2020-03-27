@@ -27,6 +27,7 @@ public:
   // std::string model_id;
   double tensile_strength;
   int nbends;
+  int number_of_modules;
   std::string modelFileLocation;
   Wt::WDateTime  uploadDate;
 
@@ -37,6 +38,7 @@ public:
     // dbo::id(a, model_id, "model_id", 20);
     dbo::field(a, tensile_strength, "model_tensile_strength");
     dbo::field(a, nbends, "model_bend_count");
+    dbo::field(a, number_of_modules, "number_of_modules");
     dbo::field(a, modelFileLocation, "model_file_location");
     dbo::field(a, uploadDate, "model_upload_date");
 
