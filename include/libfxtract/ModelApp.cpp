@@ -14,27 +14,30 @@ namespace Fxt {
     {
       std::vector<ModelFace> vface;
       std::vector<TopoDS_Face> tvfaces;
-      StepProcessor stepProcessor;
-      IgesProcessor igesProcessor;
-      ModelReader mReader;
+      // StepProcessor stepProcessor;
+      auto stepProcessor = make_unique<StepProcessor>();
+      // IgesProcessor igesProcessor;
+      auto igesProcessor = make_unique<IgesProcessor>();
+      // ModelReader mReader;
+      auto mReader = make_unique<ModelReader>();
       // Session session_(connectionPool_);
 
       //loads file MyFile.igs
       std::string filename = modelFile;
-      FileFormat fileFormat = mReader.checkFileFormat(modelFile);
-      XSControl_Reader str = mReader.processModelFile(fileFormat, modelFile);
+      FileFormat fileFormat = mReader->checkFileFormat(modelFile);
+      XSControl_Reader str = mReader->processModelFile(fileFormat, modelFile);
 
       Standard_Integer nbs = str.NbShapes();
       std::cout << "nbs : " << nbs << '\n';
 
       switch (fileFormat) {
         case FileFormat::IGES_FORMAT:
-        igesProcessor.extractFeactures(str);
-        vface = igesProcessor.getModelFaces();
+        igesProcessor->extractFeactures(str);
+        vface = igesProcessor->getModelFaces();
         break;
         case FileFormat::STEP_FORMAT:
-        stepProcessor.extractFeactures(str);
-        vface = stepProcessor.getModelFaces();
+        stepProcessor->extractFeactures(str);
+        vface = stepProcessor->getModelFaces();
         break;
         default:
         std::cout << "Unknown file format" << '\n';
