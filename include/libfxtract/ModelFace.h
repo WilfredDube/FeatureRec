@@ -13,6 +13,10 @@
 #pragma once
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Edge.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Adaptor3d_Curve.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <vector>
 #include "ModelMath.h"
 #include "ModelVertex.h"
@@ -46,6 +50,7 @@ class ModelFace : public TopoDS_Face{
   std::vector<ModelEdge> face_edges; //!< edges of the face.
   std::vector<ModelEdge> parallel_face_edges; //!< edges of the parallel face.
   std::vector<ModelEdge> central_face_edges; //!< edges of the central face. code for generating the central face not yet available.
+  size_t num_edges; //!< number of edges
 public:
   BendType bend_type;
   static int nbends;
@@ -96,7 +101,8 @@ public:
   void addEdge(const ModelEdge& n);
 
   void extractEdges(TopoDS_Face face);
-
+  void setNumEdges(size_t nEdges);
+  size_t getNumEdges();
   std::vector<ModelEdge> getFaceEdges();
   void computeFaceNormal();
 

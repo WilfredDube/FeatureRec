@@ -157,6 +157,13 @@ void ModelFace::extractEdges(TopoDS_Face face) {
     edgex.setLineUnitVector(compute_line_unit_vector(edgex.getLineVector()));
     addEdge(edgex);
   }
+
+void ModelFace::setNumEdges(size_t nEdges){
+  num_edges = nEdges;
+}
+
+size_t ModelFace::getNumEdges(){
+  return num_edges;
 }
 
 std::vector<ModelEdge> ModelFace::getFaceEdges(){
