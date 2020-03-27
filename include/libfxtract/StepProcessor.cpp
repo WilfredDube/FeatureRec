@@ -19,6 +19,7 @@ void StepProcessor::extractFeactures(XSControl_Reader reader) {
       ++p;
       Standard_Real curvature = compute_curvature(face);
       if (curvature == 0.0){
+      if (roundd(curvature) == 0.0){
         test = new ModelFace(p, PlaneType::PLANAR);
       } else {
         test = new ModelFace(p, PlaneType::NON_PLANAR);
