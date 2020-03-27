@@ -289,7 +289,7 @@ void ModelFace::classifyBends(std::vector<ModelFace>& v){
                   v[j].bend_type = BendType::EXTERNAL;
                   b->bend_same_as_id = v[j].face_id;
                   v[j].bend_same_as_id = b->face_id;
-                  thickness = fabsl(roundd(v[j].Radius) - roundd(b->Radius));
+                  // thickness = fabsl(roundd(v[j].Radius) - roundd(b->Radius));
                   // std::cout << b->face_id << " - " << v[j].face_id << "  ";
                   // std::cout << setprecision(10) << b->Radius << " < " << v[j].Radius << '\n';
                 } else {
@@ -297,7 +297,7 @@ void ModelFace::classifyBends(std::vector<ModelFace>& v){
                   v[j].bend_type = BendType::INTERNAL;
                   b->bend_same_as_id = v[j].face_id;
                   v[j].bend_same_as_id = b->face_id;
-                  thickness = fabsl(roundd(b->Radius) - roundd(v[j].Radius));
+                  // thickness = fabsl(roundd(b->Radius) - roundd(v[j].Radius));
                   // std::cout << b->face_id << " - " << v[j].face_id << "  ";
                   // std::cout << b->Radius << " > " << v[j].Radius << '\n';
                 }
@@ -344,7 +344,7 @@ void ModelFace::classifyBends(std::vector<ModelFace>& v){
 // }
 
 int ModelFace::nbends = 0;
-Standard_Real ModelFace::thickness;
+Standard_Real ModelFace::thickness = 0.0;
 // TODO :
 // Fill in all members of each class
 // create bend class
