@@ -169,7 +169,7 @@ void FileDropApplication::saveFile(Wt::WFileDropWidget::File *file)
     p->nbends = 0;
     p->uploadDate = Wt::WDateTime::currentDateTime();
     // // dbo::ptr<ModelFile> joe =
-    cout << ">>>>>>>>>>>>>>>> TS : " << p->modelFileLocation << endl;
+    cout << ">>>>>>>>>>>>>>>> TS >>>>>>>>>>>> : " << p->modelFileLocation << endl;
 
     session_.add(MF);
     //

@@ -38,6 +38,7 @@
 #include "../db/BendFeature.h"
 
 #include <Wt/WApplication.h>
+#include <Wt/Dbo/Dbo.h>
 // #include "../include/testtopo.h"
 
 /*

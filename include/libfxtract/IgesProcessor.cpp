@@ -29,4 +29,6 @@ void IgesProcessor::extractFeactures(XSControl_Reader reader) {
     addFace(*test);
     addTopoDSFace(face);
   }
+
+  std::cout << "Number of faces : " << nfaces << " Number of bends: " << nbends << '\n';
 }

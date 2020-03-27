@@ -30,10 +30,20 @@ void StepProcessor::extractFeactures(XSControl_Reader reader) {
       test->setBendLength(test->getFaceEdges());
       test->computeFaceNormal();
       test->computeFaceEquation();
+      // test->setTopoDSFace(face);
       addFace(*test);
       addTopoDSFace(face);
+
+      if (test->getPlaneType() == PlaneType::NON_PLANAR){
+        // std::cout << "B"<< p;
+      }
+      // BRepAdaptor_Surface faceDir = BRepAdaptor_Surface(face, Standard_False);
+      // gp_Dir dir = faceDir.Direction();
+      // std::cout << " Orientation : " << face.Orientation() << " for Face ID : " << p << '\n';
 
       myFaceExplorer.Next();
     }
   }
+
+  std::cout << "Number of faces : " << nfaces << " Number of bends: " << nbends << '\n';
 }
