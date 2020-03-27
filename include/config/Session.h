@@ -27,4 +27,4 @@ public:
 };
 
 
-#endif /* end of include guard:  */
+#endif // SESSION_H_

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MODEL_MATH_H_
+#define MODEL_MATH_H_
+
 #include <cmath>
 #include <vector>
 #include "ModelEdge.h"
@@ -22,3 +24,5 @@ long double compute_length(ModelEdge *edge);
 long double compute_angle(gp_Pnt n1, gp_Pnt n2);
 gp_Pnt compute_normal(std::vector<ModelEdge> edges);
 Standard_Real compute_thickness(ModelFace face);
+
+#endif // MODEL_MATH_H_

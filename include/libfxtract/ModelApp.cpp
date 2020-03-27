@@ -245,7 +245,7 @@ ModelApp::ModelApp(Session& session): session_(session)
     std::vector<TopoDS_Face> tvfaces;
     StepProcessor stepProcessor;
     IgesProcessor igesProcessor;
-    ModelReaderClass mReader;
+    ModelReader mReader;
     // Session session_(connectionPool_);
 
     //loads file MyFile.igs

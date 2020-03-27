@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MODEL_PROCESSOR_H_
+#define MODEL_PROCESSOR_H_
+
 #include <iostream>
 #include <TopoDS_Shape.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -23,3 +25,5 @@ public:
   void addFace(ModelFace& face);
   void addTopoDSFace(TopoDS_Face face);
 };
+
+#endif // MODEL_PROCESSOR_H_

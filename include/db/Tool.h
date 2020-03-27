@@ -1,5 +1,5 @@
-#ifndef TOOL_H
-#define TOOL_H
+#ifndef TOOL_H_
+#define TOOL_H_
 
 #include <Wt/WDate.h>
 #include <Wt/WString.h>
@@ -51,4 +51,4 @@ namespace Wt {
 
 DBO_EXTERN_TEMPLATES(Tool)
 
-#endif
+#endif // TOOL_H_

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MODEL_EDGE_H_
+#define MODEL_EDGE_H_
+
 #include <IGESControl_Reader.hxx>
 #include <XSControl_Reader.hxx>
 #include <TColStd_HSequenceOfTransient.hxx>
@@ -80,3 +82,5 @@ public:
 
   static bool compare_vl(gp_Pnt v1, gp_Pnt v2);
 };
+
+#endif // MODEL_EDGE_H_

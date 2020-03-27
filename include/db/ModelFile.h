@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MODEL_FILE_H_
+#define MODEL_FILE_H_
 
 #include <Wt/WDate.h>
 #include <string>
@@ -63,3 +64,5 @@ public:
 // }
 
 DBO_EXTERN_TEMPLATES(ModelFile);
+
+#endif // MODEL_FILE_H_

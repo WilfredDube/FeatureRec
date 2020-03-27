@@ -58,4 +58,4 @@ public:
 
 DBO_EXTERN_TEMPLATES(BendFeature)
 
-#endif
+#endif // BEND_FEATURE_

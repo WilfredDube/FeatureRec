@@ -1,5 +1,5 @@
-#ifndef MODEL_UTILS_H
-#define MODEL_UTILS_H
+#ifndef MODEL_UTILS_H_
+#define MODEL_UTILS_H_
 
 #include <IGESControl_Reader.hxx>
 #include <XSControl_Reader.hxx>
@@ -25,4 +25,4 @@
 void printType(GeomAbs_CurveType curvetype);
 void printShapeType(TopAbs_ShapeEnum shapetype);
 
-#endif /* end of include guard:  */
+#endif // MODEL_UTILS_H_

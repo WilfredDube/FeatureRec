@@ -10,7 +10,9 @@
 *
 */
 
-#pragma once
+#ifndef MODEL_FACE_H_
+#define MODEL_FACE_H_
+
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Edge.hxx>
 #include <Geom_BSplineCurve.hxx>
@@ -111,7 +113,10 @@ public:
   static void classifyFaces(std::vector<ModelFace>& faces);
   static void classifyBends(std::vector<ModelFace>& v);
 };
+
 // TODO :
 // Fill in all members of each class
 // create bend class
 // get bend face association
+
+#endif // MODEL_FACE_H_

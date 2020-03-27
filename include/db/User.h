@@ -1,4 +1,5 @@
-#pragma once
+#ifndef USER_H_
+#define USER_H_
 
 #include <Wt/WDate.h>
 #include <Wt/WString.h>
@@ -61,3 +62,5 @@ public:
 // }
 
 DBO_EXTERN_TEMPLATES(User);
+
+#endif // USER_H

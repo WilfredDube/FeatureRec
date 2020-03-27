@@ -7,8 +7,8 @@ set(fxtract_source_files
    ModelFace.h
    ModelUtils.cpp
    ModelUtils.h
-   ModelReaderClass.cpp
-   ModelReaderClass.h
+   ModelReader.cpp
+   ModelReader.h
    ModelEdge.cpp
    ModelEdge.h
    ModelVertex.cpp

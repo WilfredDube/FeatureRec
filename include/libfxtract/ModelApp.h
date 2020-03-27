@@ -1,3 +1,6 @@
+#ifndef MODEL_APP_H_
+#define MODEL_APP_H_
+
 #include <iostream>
 #include <memory>
 #include <cstring>
@@ -33,7 +36,7 @@
 #include "../libfxtract/ModelFace.h"
 #include "../libfxtract/StepProcessor.h"
 #include "../libfxtract/IgesProcessor.h"
-#include "../libfxtract/ModelReaderClass.h"
+#include "../libfxtract/ModelReader.h"
 #include "../config/Session.h"
 #include "../db/BendFeature.h"
 
@@ -61,3 +64,5 @@ public:
   // static
   int run(char const *modelFile, dbo::ptr<ModelFile> p);
 };
+
+#endif // MODEL_APP_H_

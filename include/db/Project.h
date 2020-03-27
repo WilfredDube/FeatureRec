@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROJECT_H_
+#define PROJECT_H_
 
 #include <Wt/WDate.h>
 #include <Wt/WString.h>
@@ -55,3 +56,5 @@ public:
 // }
 
 DBO_EXTERN_TEMPLATES(Project);
+
+#endif // PROJECT_H_

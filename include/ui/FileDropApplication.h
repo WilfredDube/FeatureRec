@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif
+#endif // FILEDROPAPPLICATION_H_
