@@ -21,6 +21,7 @@ public:
   double bend_radius;
   double bend_thickness;
   double bend_length; // error when type is long double
+  std::string bending_tool_id;
   // vector<string> bend_parallelTo;
   // vector<string> bend_pependicularTo;
 
@@ -36,6 +37,7 @@ public:
     dbo::field(a, bend_radius, "bend_radius");
     dbo::field(a, bend_thickness, "bend_thickness");
     dbo::field(a, bend_length, "bend_length");
+    dbo::field(a, bending_tool_id, "bending_tool_id");
 
     dbo::belongsTo(a, modelFile, "model_file", dbo::OnDeleteCascade);
   }
