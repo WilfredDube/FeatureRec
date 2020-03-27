@@ -93,16 +93,29 @@ int ModelApp::run(char const *modelFile, dbo::ptr<ModelFile> p)
           //
           // ModelApp::run(saveName.c_str(), p);
         }
+        // }
       }
     }
+    session_.flush();
+    transaction.commit();
+
+    // findConnection(list);
+    // std::vector<int> R1;
+    // queue<FRlnship> Q;
+    // preFAG(list);
+    // // FAG(list, R1, Q, 0, list[0].face_id1);
+    //
+    // for (auto frl : R1){
+    //   std::cout << frl << " - ";
+    // }
+    //
+    // std::cout << '\n';
+
+    std::cout << "SIZE : " <<vface.size()<< '\n';
+    std::cout << "SIZE : " << list.size()<< '\n';
+    std::cout << "File name : " << modelFile << endl;
+    std::cout << "Thickness : " << std::setprecision(3) << ModelFace::thickness << " mm" << '\n';
+    std::cout << "# of Bends: " << ModelFace::nbends / 2 << '\n';
+
+    return 0;
   }
-  session_.flush();
-  transaction.commit();
-
-  std::cout << "SIZE : " <<vface.size()<< '\n';
-  std::cout << "File name : " << modelFile << endl;
-  std::cout << "Thickness : " << ModelFace::thickness << '\n';
-  std::cout << "# of Bends: " << ModelFace::nbends / 2 << '\n';
-
-  return 0;
-}

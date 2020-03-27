@@ -65,8 +65,8 @@ void ModelFace::setBendLength(std::vector<ModelEdge> face_edges){
 void ModelFace::setCurvature(Standard_Real cv) {
   Curvature = cv;
 
-  if (Curvature != 0) {
-    Radius = ((Curvature < 0) ? -(1 / Curvature) : (1 / Curvature)) / 2;
+  if (Curvature != 0.0) {
+    Radius = ((Curvature < 0.0) ? -(1 / Curvature) : (1 / Curvature)) / 2;
     // std::cout << "Radius : " << Radius <<'\n';
   }
 }
@@ -201,21 +201,29 @@ void ModelFace::computeFaceNormal(){
 * @param faces a list for faces.
 */
 void ModelFace::classifyBS_BF(std::vector<ModelFace>& faces){
+  size_t nfaces = 0, nbends = 0, sbends = 0;
   for (size_t i = 0; i < faces.size(); i++) {
     int arc_edge_cnt = 0;
     switch (faces[i].plane_type) {
       case PlaneType::PLANAR :
+      ++nfaces;
       for (size_t j = 0; j < faces[i].face_edges.size(); j++) {
         /* If the face is PLANAR check whether there is an ARC edge in the face. */
-        if (faces[i].face_edges[j].getEdgeType() == EdgeType::ARC) {
+        if ((faces[i].face_edges[j].getEdgeType() == EdgeType::ARC)) {
           ++arc_edge_cnt; /* count the arcs. */
         }
+
+        // if ((faces[i].num_edges > 4)) {
+        //   arc_edge_cnt = 2;
+        //   std::cout << "/* message */" << '\n';
+        // }
 
         /* If the face has exactly 2 ARC edges then it is a BEND_SIDE face. */
         if (arc_edge_cnt == 2) {
           faces[i].setFaceType(FaceType::BEND_SIDE);
           // std::cout << "BEND_SIDE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
           arc_edge_cnt = 0;
+          ++sbends;
           break;
         }
       }
@@ -223,9 +231,16 @@ void ModelFace::classifyBS_BF(std::vector<ModelFace>& faces){
       case PlaneType::NON_PLANAR : faces[i].setFaceType(FaceType::BEND_FACE);
       // std::cout << "BEND_FACE Face ID = " << faces[i].getFaceId()<<" Type = "<< (faces[i].getPlaneType() == PlaneType::NON_PLANAR ? "NON-PLANAR" : "PLANAR") << '\n';
       faces[i].printNormal();
+      // BRepAdaptor_Surface faceDir = BRepAdaptor_Surface(faces[i]);
+      // gp_Dir dir = faceDir.Direction();
+      // std::cout << "Dir : " << dir.X() << ", " << dir.Y() << ", " << dir.Z() << '\n';
+      ++nbends;
+      faces[i].setFaceId(nbends);
       break;
     }
   }
+
+  std::cout << "Number of faces : " << (nfaces - sbends) << " Number of bends: " << nbends << " Number of side bend: " << sbends << '\n';
 }
 /**
 * Identifies FACE and THICKNESS_DEFINING_FACE faces types. Retrieves the BEND_FACE type faces and compares its
@@ -235,7 +250,7 @@ void ModelFace::classifyBS_BF(std::vector<ModelFace>& faces){
 * @param faces a list for faces.
 */
 void ModelFace::classifyFaces(std::vector<ModelFace>& faces) {
-  size_t count = faces.size();
+  size_t count = faces.size(), fcount = 0;
   // bool done = false;
 
   for (size_t i = 0; i < count; i++) {
@@ -254,7 +269,9 @@ void ModelFace::classifyFaces(std::vector<ModelFace>& faces) {
                 // if (ModelEdge::compare_edges(faces[i].face_edges[k], faces[j].face_edges[l]))
                 if(faces[i].face_edges[k].getEdge().IsSame(faces[j].face_edges[l].getEdge())){
                   // std::cout << "Face ID : "<< faces[j].face_id  << '\n';
+                  ++fcount;
                   faces[j].setFaceType(FaceType::FACE);
+                  // faces[j].setFaceId(fcount);
                   // std::cout << "FACE" << '\n';
                   faces[i].face_edges[k].setEdgePosition(EdgePosition::JOINING_EDGE);
                   faces[j].face_edges[l].setEdgePosition(EdgePosition::JOINING_EDGE);
