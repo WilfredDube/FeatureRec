@@ -26,6 +26,13 @@ namespace Fxt {
   long double compute_angle(gp_Pnt n1, gp_Pnt n2);
   gp_Pnt compute_normal(std::vector<ModelEdge> edges);
   Standard_Real compute_thickness(ModelFace face);
+  /**
+  *   Computes the curvature of a ModelFace and ModelBend.
+  */
+  template<typename T>
+  Standard_Real computeCurvature(T face);
+
+  #include "ModelMath.tcc"
 
 }
 
