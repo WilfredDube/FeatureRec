@@ -3,29 +3,32 @@
 
 #include <cmath>
 #include <vector>
-#include "ModelEdge.h"
+#include <Precision.hxx>
 #include "ModelFace.h"
-
+#include "ModelEdge.h"
 
 namespace Fxt {
-  class ModelFace;
 
   const Standard_Real PI = 3.14159265358979323;
 
-  long double roundd(long double var);
-  gp_Dir compute_unit_normal(TopoDS_Face face);
-  Standard_Real compute_curvature(TopoDS_Face face);
-  long double compute_euclidean_norm(gp_Pnt *vt);
-  long double compute_plane_equation(std::vector<ModelEdge> edges, gp_Pnt normal);
-  static bool compare_vl(gp_Pnt v1, gp_Pnt v2);
-  gp_Pnt compute_cross_product(gp_Pnt *a, gp_Pnt *b);
-  gp_Pnt compute_line_vector(ModelEdge *edge);
-  gp_Pnt compute_line_unit_vector(gp_Pnt line_vector);
-  long double compute_dot_product(gp_Pnt *vt1, gp_Pnt *vt2);
-  long double compute_length(ModelEdge *edge);
-  long double compute_angle(gp_Pnt n1, gp_Pnt n2);
-  gp_Pnt compute_normal(std::vector<ModelEdge> edges);
-  Standard_Real compute_thickness(ModelFace face);
+  /*
+  *   Prints a vertex
+  */
+  void print(gp_Pnt vertex);
+
+  /**
+  *   Rounds of the value to 2 decimal places to avoid error in floating point values
+  *   such as getting 89.999999999999999999999999 instead of 90.
+  */
+  Standard_Real roundd(long double value);
+
+  /**
+  *   Computes the unit normal vector of a Face.
+  */
+  gp_Dir computeUnitNormal(TopoDS_Face face);
+  gp_Dir computeNormal(std::vector<ModelEdge> modelEdges);
+  gp_Pnt computeLineUnitVector(gp_Pnt lineVector);
+
   /**
   *   Computes the curvature of a ModelFace and ModelBend.
   */
@@ -33,6 +36,43 @@ namespace Fxt {
   Standard_Real computeCurvature(T face);
 
   #include "ModelMath.tcc"
+
+  /**
+  *   Computes the equation of a plane.
+  *   @param modelEdges are the edges of a plane (ModelFace) and its normal.
+  */
+  Standard_Real computePlaneEquation(std::vector<ModelEdge> modelEdges, gp_Pnt faceNormal);
+
+  /**
+  *   Tests whether two vertices v1 and v2 are equal.
+  */
+  static bool isEqual(gp_Pnt aVertex, gp_Pnt bVertex);
+
+  Standard_Real computeEuclideanNorm(gp_Pnt *vertex);
+  static gp_Pnt computeCrossProduct(gp_Pnt *aVector, gp_Pnt *bVector);
+  static Standard_Real computeDotProduct(gp_Pnt *aVertex, gp_Pnt *bVertex);
+
+  /*
+  * Computes the directional vector of an edge.
+  */
+  gp_Pnt computeLineVector(ModelEdge edge);
+
+  /*
+  *   Computes the length of an edge.
+  */
+  Standard_Real computeLength(ModelEdge& edge);
+
+  /*
+  *   Computes the thickness of the entire model.
+  *   @param face is a face with FaceType::THICKNESS_DEFINING_FACE attribute.
+  */
+  Standard_Real computeThickness(ModelFace face);
+
+  /*
+  *   Computes the angle between two faces.
+  *   @param n1 and n2 are normals of the two faces.
+  */
+  Standard_Real computeAngle(gp_Pnt aFaceNormal, gp_Pnt bFaceNormal);
 
 }
 
