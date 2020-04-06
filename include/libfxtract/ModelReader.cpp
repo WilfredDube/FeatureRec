@@ -20,7 +20,9 @@ namespace Fxt {
       case FileFormat::STEP_FORMAT:
       return processStepFile(filename);
       default:
-      std::cout << "Unknown file format" << '\n';
+      throw invalid_argument("Unknown file format : Fxtract only accepts iges and step file formats.");
+      break;
+
     }
 
     return NULL;
