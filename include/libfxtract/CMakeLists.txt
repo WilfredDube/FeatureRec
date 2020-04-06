@@ -30,5 +30,7 @@ find_package(wt COMPONENTS wt wtdbo wtdbosqlite3 wthttp REQUIRED)
 find_package(OpenCASCADE REQUIRED)
 
 add_library(fxtract ${fxtract_source_files})
+target_compile_features(fxtract PUBLIC cxx_std_17)
+set_target_properties(fxtract PROPERTIES CXX_EXTENSIONS OFF)
 target_include_directories(fxtract PRIVATE ${Boost_INCLUDE_DIRS} ${wt_INCLUDE_DIRS} ${OpenCASCADE_INCLUDE_DIR})
 target_link_libraries(fxtract ${Boost_LIBRARIES} Threads::Threads ${wt_LIBRARIES} wthttp wt wtdbo wtdbosqlite3 ${OpenCASCADE_LIBRARIES})
