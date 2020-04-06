@@ -1,24 +1,26 @@
 set(fxtract_source_files
-   ModelApp.cpp
-   ModelApp.h
-   ModelMath.cpp
-   ModelMath.h
-   ModelFace.cpp
-   ModelFace.h
-   ModelUtils.cpp
-   ModelUtils.h
-   ModelReader.cpp
-   ModelReader.h
-   ModelEdge.cpp
-   ModelEdge.h
-   ModelVertex.cpp
-   ModelVertex.h
-   ModelProcessor.cpp
-   ModelProcessor.h
-   StepProcessor.cpp
-   StepProcessor.h
-   IgesProcessor.cpp
-   IgesProcessor.h
+  ModelUtils.cpp
+  ModelUtils.h
+  MFace.cpp
+  MFace.h
+  StepProcessor.cpp
+  StepProcessor.h
+  IgesProcessor.cpp
+  IgesProcessor.h
+  ModelApp.cpp
+  ModelApp.h
+  ModelEdge.cpp
+  ModelEdge.h
+  ModelReader.cpp
+  ModelReader.h
+  ModelFace.cpp
+  ModelFace.h
+  ModelBend.cpp
+  ModelBend.h
+  Model.cpp
+  Model.h
+  ModelMath.cpp
+  ModelMath.h
 )
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
