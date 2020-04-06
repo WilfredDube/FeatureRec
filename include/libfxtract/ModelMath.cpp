@@ -27,16 +27,31 @@ namespace Fxt {
 
   gp_Dir computeNormal(std::vector<ModelEdge> modelEdges)
   {
-    size_t count = face.getFaceEdges().size();
-    Standard_Real smallest = face.getFaceEdgesAt(0).getEdgeLength();
+    ModelEdge aEdge, bEdge;
 
-    for (size_t i = 0; i < count; i++) {
-      if (smallest > face.getFaceEdgesAt(i).getEdgeLength()) {
-        smallest = face.getFaceEdgesAt(i).getEdgeLength();
+    aEdge = modelEdges[0];
+    for (size_t i = 0; i < modelEdges.size(); i++) {
+      if (aEdge.getEdgeNum() == modelEdges[i].getEdgeNum()) {
+        continue;
+      }
+
+      // Compare edge end points if at least one is equal to one in anEdge
+      // then retrieve that edge.
+      if (isEqual(aEdge.getEdgeEndPoints()[0], (modelEdges[i]).getEdgeEndPoints()[0]) ||
+      isEqual(aEdge.getEdgeEndPoints()[1], (modelEdges[i]).getEdgeEndPoints()[0]) ||
+      isEqual(aEdge.getEdgeEndPoints()[1], (modelEdges[i]).getEdgeEndPoints()[1]) ||
+      isEqual(aEdge.getEdgeEndPoints()[0], (modelEdges[i]).getEdgeEndPoints()[1])) {
+        bEdge = modelEdges[i];
+        break;
       }
     }
 
-    return smallest;
+    gp_Pnt aVertex = computeLineVector(aEdge);
+    gp_Pnt bVertex = computeLineVector(bEdge);
+
+    aVertex = computeCrossProduct(&aVertex, &bVertex);
+
+    return gp_Dir(aVertex.X(), aVertex.Y(), aVertex.Z());
   }
 
   Standard_Real
@@ -46,9 +61,15 @@ namespace Fxt {
     double u = (surface.FirstUParameter() + surface.LastUParameter()) / 2.0;
     double v = (surface.FirstVParameter() + surface.LastVParameter()) / 2.0;
 
-    BRepLProp_SLProps surfaceProps(surface, u, v, 2, gp::Resolution());
+  gp_Pnt computeLineVector(ModelEdge edge)
+  {
+    gp_Pnt vertex(
+      edge.getEdgeEndPoints()[0].X() - edge.getEdgeEndPoints()[1].X(),
+      edge.getEdgeEndPoints()[0].Y() - edge.getEdgeEndPoints()[1].Y(),
+      edge.getEdgeEndPoints()[0].Z() - edge.getEdgeEndPoints()[1].Z()
+    );
 
-    return surfaceProps.MeanCurvature();
+    return vertex;
   }
 
   long double
