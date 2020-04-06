@@ -1,15 +1,19 @@
 #include "ModelReader.h"
+#include "IgesProcessor.h"
+#include "StepProcessor.h"
 
 namespace Fxt {
 
-  FileFormat ModelReader::checkFileFormat(string filename){
-    if (filename.find("igs") != std::string::npos || filename.find("iges") != std::string::npos) {
+  FileFormat ModelReader::checkFileFormat(const string fileName){
+    std::cout << "/* message */" << '\n';
+    if (fileName.find("igs") != std::string::npos || fileName.find("iges") != std::string::npos) {
       return FileFormat::IGES_FORMAT;
-    } else if (filename.find("step") != std::string::npos || filename.find("stp") != std::string::npos) {
+    } else if (fileName.find("step") != std::string::npos || fileName.find("stp") != std::string::npos) {
       return FileFormat::STEP_FORMAT;
+    } else {
+      throw invalid_argument("Unknown file format : Fxtract only accepts iges and step file formats.");
     }
 
-    return FileFormat::UNKNOWN_FORMAT;
   }
 
   void ModelReader::processModel(const string fileName)
