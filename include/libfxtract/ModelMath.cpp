@@ -25,9 +25,7 @@ namespace Fxt {
     return norm;
   }
 
-
-  Standard_Real
-  compute_thickness(ModelFace face)
+  gp_Dir computeNormal(std::vector<ModelEdge> modelEdges)
   {
     size_t count = face.getFaceEdges().size();
     Standard_Real smallest = face.getFaceEdgesAt(0).getEdgeLength();
