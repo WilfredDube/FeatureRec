@@ -12,7 +12,14 @@ namespace Fxt {
     return FileFormat::UNKNOWN_FORMAT;
   }
 
-  XSControl_Reader ModelReader::processModelFile(FileFormat fileFormat, const char* filename)
+  void ModelReader::processModel(const string fileName)
+  {
+    FileFormat fileFormat = checkFileFormat(fileName);
+
+    processModelFile(fileFormat, fileName.c_str());
+  }
+
+  void ModelReader::processModelFile(FileFormat fileFormat, const char* fileName)
   {
     auto igesProcessor = make_unique<IgesProcessor>();
     auto stepProcessor = make_unique<StepProcessor>();
