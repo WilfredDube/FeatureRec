@@ -14,18 +14,27 @@ namespace Fxt {
 
   XSControl_Reader ModelReader::processModelFile(FileFormat fileFormat, const char* filename)
   {
+    auto igesProcessor = make_unique<IgesProcessor>();
+    auto stepProcessor = make_unique<StepProcessor>();
+    IGESControl_Reader myIgesReader;
+    STEPControl_Reader myStepReader;
+
     switch (fileFormat) {
+
       case FileFormat::IGES_FORMAT:
-      return processIgesFile(filename);
+          myIgesReader = processIgesFile(fileName);
+          igesProcessor->extractFaces(model_, myIgesReader);
+          break;
       case FileFormat::STEP_FORMAT:
-      return processStepFile(filename);
+          myStepReader = processStepFile(fileName);
+          stepProcessor->extractFaces(model_, myStepReader);
+          break;
       default:
       throw invalid_argument("Unknown file format : Fxtract only accepts iges and step file formats.");
       break;
 
     }
 
-    return NULL;
   }
 
   IGESControl_Reader ModelReader::processIgesFile(const char* igesFile){
