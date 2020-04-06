@@ -1,5 +1,9 @@
 #include "ModelMath.h"
 
+#include <stdexcept>
+#include <BRepTools.hxx>
+#include <GeomLProp_SLProps.hxx>
+
 namespace Fxt {
 
   Standard_Real roundd(long double value)
@@ -54,12 +58,12 @@ namespace Fxt {
     return gp_Dir(aVertex.X(), aVertex.Y(), aVertex.Z());
   }
 
-  Standard_Real
-  compute_curvature(TopoDS_Face face)
-  {
-    BRepAdaptor_Surface surface = BRepAdaptor_Surface(face);
-    double u = (surface.FirstUParameter() + surface.LastUParameter()) / 2.0;
-    double v = (surface.FirstVParameter() + surface.LastVParameter()) / 2.0;
+  void print(gp_Pnt vertex) {
+    std::cout << " X : " << vertex.X() <<
+                  " Y : " << vertex.Y() <<
+                  " Z : " << vertex.Z() <<
+                  '\n';
+  }
 
   gp_Pnt computeLineVector(ModelEdge edge)
   {
@@ -72,159 +76,126 @@ namespace Fxt {
     return vertex;
   }
 
-  long double
-  compute_euclidean_norm(gp_Pnt *vt)
+  gp_Pnt computeLineUnitVector(gp_Pnt lineVector)
   {
-    long double A = vt->X() * vt->X();
-    long double B = vt->Y() * vt->Y();
-    long double C = vt->Z() * vt->Z();
+    Standard_Real magnitude = computeEuclideanNorm(&lineVector);
 
-    return sqrt(A + B + C);
+    gp_Pnt vt (
+      lineVector.X() / magnitude,
+      lineVector.Y() / magnitude,
+      lineVector.Z() / magnitude
+    );
+
+    return vt;
   }
 
-  long double
-  compute_plane_equation(std::vector<ModelEdge> edges, gp_Pnt normal)
+  Standard_Real computePlaneEquation(std::vector<ModelEdge> modelEdges, gp_Pnt faceNormal)
   {
-    long double d1, d2;
-    size_t count = edges.size();
+    Standard_Real d1, d2;
+    size_t count = modelEdges.size();
 
     for (size_t i = 0; i < count; i++) {
-      ModelEdge edge = edges[i];
+      ModelEdge edge = modelEdges[i];
 
-      d1 = (normal.X() * edge.start_vertex.X()) + (normal.Y() * edge.start_vertex.Y()) + (normal.Z() * edge.start_vertex.Z());
-      d2 = (normal.X() * edge.terminate_vertex.X()) + (normal.Y() * edge.terminate_vertex.Y()) + (normal.Z() * edge.terminate_vertex.Z());
+      d1 = (faceNormal.X() * edge.getEdgeEndPoints()[0].X()) + (faceNormal.Y() * edge.getEdgeEndPoints()[0].Y()) + (faceNormal.Z() * edge.getEdgeEndPoints()[0].Z());
+      d2 = (faceNormal.X() * edge.getEdgeEndPoints()[1].X()) + (faceNormal.Y() * edge.getEdgeEndPoints()[1].Y()) + (faceNormal.Z() * edge.getEdgeEndPoints()[1].Z());
 
-      if (fabsl(d1 - d2) < (long double)0.00001) {
+      if (fabsl(d1 - d2) < (Standard_Real)0.00001) {
         return -d1;
       }
 
     }
 
-    return -10000000;
+    throw std::logic_error("Could not create equation of the plane.");
   }
 
-  static bool
-  compare_vl(gp_Pnt v1, gp_Pnt v2)
+  static bool isEqual(gp_Pnt aVertex, gp_Pnt bVertex)
   {
     bool truth = false;
 
-    if (v1.X() == v2.X() && v1.Y() == v2.Y() && v1.Z() == v2.Z()) {
+    if (aVertex.IsEqual(bVertex, Precision::Confusion()))
+    {
       truth = true;
     }
 
     return truth;
   }
 
-  gp_Pnt
-  compute_cross_product(gp_Pnt *a, gp_Pnt *b)
+  Standard_Real computeEuclideanNorm(gp_Pnt *vertex)
   {
-    // gp_Pnt *normal;// = (gp_Pnt *)malloc(sizeof(* normal));
+    gp_XYZ v(vertex->X(), vertex->Y(), vertex->Z());
 
-    Standard_Real X = (a->Y() * b->Z()) - (a->Z() * b->Y());
-    Standard_Real Y = - ((a->X() * b->Z()) - (a->Z() * b->X()));
-    Standard_Real Z = (a->X() * b->Y()) - (a->Y() * b->X());
+    return v.Modulus();
+  }
+
+  static gp_Pnt computeCrossProduct(gp_Pnt *aVector, gp_Pnt *bVector)
+  {
+    Standard_Real X = (aVector->Y() * bVector->Z()) - (aVector->Z() * bVector->Y());
+    Standard_Real Y = - ((aVector->X() * bVector->Z()) - (aVector->Z() * bVector->X()));
+    Standard_Real Z = (aVector->X() * bVector->Y()) - (aVector->Y() * bVector->X());
 
     gp_Pnt normal(X, Y, Z);
     return normal;
   }
 
-  gp_Pnt
-  compute_line_vector(ModelEdge *edge)
+  static Standard_Real computeDotProduct(gp_Pnt *aVertex, gp_Pnt *bVertex)
   {
-    gp_Pnt vt(
-      edge->start_vertex.X() - edge->terminate_vertex.X(),
-      edge->start_vertex.Y() - edge->terminate_vertex.Y(),
-      edge->start_vertex.Z() - edge->terminate_vertex.Z());
+    Standard_Real A = aVertex->X() * bVertex->X();
+    Standard_Real B = aVertex->Y() * bVertex->Y();
+    Standard_Real C = aVertex->Z() * bVertex->Z();
 
-      return vt;
-    }
+    return (A + B + C);
+  }
 
-    gp_Pnt
-    compute_line_unit_vector(gp_Pnt line_vector)
-    {
-      long double magnitude = compute_euclidean_norm(&line_vector);
+  Standard_Real computeLength(ModelEdge& edge)
+  {
+    gp_Pnt vertex(
+      edge.getEdgeEndPoints()[0].X() - edge.getEdgeEndPoints()[1].X(),
+      edge.getEdgeEndPoints()[0].Y() - edge.getEdgeEndPoints()[1].Y(),
+      edge.getEdgeEndPoints()[0].Z() - edge.getEdgeEndPoints()[1].Z()
+    );
 
-      gp_Pnt vt (
-        line_vector.X() / magnitude,
-        line_vector.Y() / magnitude,
-        line_vector.Z() / magnitude
-      );
+    return roundd(computeEuclideanNorm(&vertex));
+  }
 
-      return vt;
-    }
+  Standard_Real computeThickness(ModelFace face)
+  {
+    size_t count = face.getFaceEdges().size();
 
-    long double
-    compute_dot_product(gp_Pnt *vt1, gp_Pnt *vt2)
-    {
-      long double A = vt1->X() * vt2->X();
-      long double B = vt1->Y() * vt2->Y();
-      long double C = vt1->Z() * vt2->Z();
+    // smallest (thickness) represent the length of the smallest side of a
+    // THICKNESS_DEFINING_FACE.
+    Standard_Real smallest = face.getFaceEdges()[0].getEdgeLength();
 
-      return (A + B + C);
-    }
-
-
-    long double
-    compute_length(ModelEdge *edge)
-    {
-      gp_Pnt vt(
-        edge->start_vertex.X() - edge->terminate_vertex.X(),
-        edge->start_vertex.Y() - edge->terminate_vertex.Y(),
-        edge->start_vertex.Z() - edge->terminate_vertex.Z());
-
-        return roundd(compute_euclidean_norm(&vt));
+    for (auto& edge : face.getFaceEdges()) {
+      if (smallest > edge.getEdgeLength()) {
+        smallest = edge.getEdgeLength();
       }
-
-      long double
-      compute_angle(gp_Pnt n1, gp_Pnt n2)
-      {
-        long double cosine, angle;
-        long double dotp = compute_dot_product(&n1, &n2);
-
-        long double en1 = compute_euclidean_norm(&n1);
-        long double en2 = compute_euclidean_norm(&n2);
-
-        if (dotp == 0) {
-          cosine = 0;
-        } else {
-          cosine = dotp / (en1 * en2);
-        }
-
-        long double value = 180.0 / PI;
-
-        angle = acos(roundd(cosine)) * value;
-
-        return round(angle);
-      }
-
-      gp_Pnt
-      compute_normal(std::vector<ModelEdge> edges)
-      {
-        ModelEdge edge1, edge2;
-
-        edge1 = edges[0];
-        for (size_t i = 0; i < edges.size(); i++) {
-          if (edge1.getEdgeNum() == edges[i].getEdgeNum()) {
-            continue;
-          }
-
-          if (compare_vl(edge1.start_vertex, (edges[i]).start_vertex) ||
-          compare_vl(edge1.terminate_vertex, (edges[i]).start_vertex) ||
-          compare_vl(edge1.terminate_vertex, (edges[i]).terminate_vertex) ||
-          compare_vl(edge1.start_vertex, (edges[i]).terminate_vertex)) {
-            edge2 = (edges[i]);
-            // printf("%d\n", edge2->edge_number);
-            break;
-          }
-
-        }
-
-        gp_Pnt vta = compute_line_vector(&edge1);
-        gp_Pnt vtb = compute_line_vector(&edge2);
-
-        vta = compute_cross_product(&vta, &vtb);
-
-        return vta;
-      }
-
     }
+
+    return smallest;
+  }
+
+  Standard_Real computeAngle(gp_Pnt aFaceNormal, gp_Pnt bFaceNormal)
+  {
+    Standard_Real cosine, angle;
+    Standard_Real dotProduct = computeDotProduct(&aFaceNormal, &bFaceNormal);
+
+    Standard_Real aEuclideanNorm = computeEuclideanNorm(&aFaceNormal);
+    Standard_Real bEuclideanNorm = computeEuclideanNorm(&bFaceNormal);
+
+    if (dotProduct == 0) {
+      cosine = 0;
+    } else {
+      cosine = dotProduct / (aEuclideanNorm * bEuclideanNorm);
+    }
+
+    Standard_Real value = 180.0 / PI;
+
+    // convert the angle from radian to degrees.
+    angle = acos(roundd(cosine)) * value;
+
+    return round(angle);
+  }
+
+
+}
