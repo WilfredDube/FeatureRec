@@ -1,31 +1,23 @@
 #ifndef MODEL_UTILS_H_
 #define MODEL_UTILS_H_
 
-#include <IGESControl_Reader.hxx>
-#include <XSControl_Reader.hxx>
-#include <TColStd_HSequenceOfTransient.hxx>
-#include <TopoDS_Shape.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRepLib_MakeWire.hxx>
-#include <GeomConvert.hxx>
-#include <Geom_Surface.hxx>
-#include <Geom_BSplineSurface.hxx>
-#include <GeomLProp_SLProps.hxx>
-#include <BRepLProp_SLProps.hxx>
+#include <GeomAbs_CurveType.hxx>
+#include <TopAbs_ShapeEnum.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopoDS_Face.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopExp_Explorer.hxx>
 #include <Interface_Static.hxx>
 
 namespace Fxt {
 
+  //! Face identifier
+  using FaceID = size_t;
+
+  enum class PlaneType { PLANAR, NON_PLANAR };
+  enum class FaceType { NONE, THICKNESS_DEFINING_FACE, BEND_FACE, BEND_SIDE, FACE };
+  enum class BendType { UNASSIGNED = -1, INTERNAL, EXTERNAL };
+
   void printType(GeomAbs_CurveType curvetype);
   void printShapeType(TopAbs_ShapeEnum shapetype);
+  void printPrecision();
 
 }
 
