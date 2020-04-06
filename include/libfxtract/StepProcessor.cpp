@@ -1,55 +1,32 @@
 #include "StepProcessor.h"
+#include "ModelUtils.h"
 
 namespace Fxt {
 
-  void StepProcessor::extractFeactures(XSControl_Reader reader) {
-    TopoDS_Shape aShape;
-    size_t p = 0, j = 0, nfaces = 0, nbends = 0;
+  void StepProcessor::extractFaces(Model& model_, const XSControl_Reader reader)
+  {
+    if (reader.NbShapes() <= 0)
+      throw invalid_argument("Unable to read model.");
 
-    Standard_Integer nbs = reader.NbShapes();
+    FaceID faceID = 0;
+    TopoDS_Shape topoDSFaces;
+    Standard_Integer numShapes = reader.NbShapes();
 
-    for (Standard_Integer i=1; i<=nbs; i++, ++j) {
-      aShape = reader.Shape(i);
-      TopExp_Explorer myFaceExplorer(aShape, TopAbs_FACE);
+    /* Go through the shape object and extract the faces. */
+    for (size_t i = 1; i <= numShapes; i++) {
+      topoDSFaces = reader.Shape(i);
+      TopExp_Explorer myFaceExplorer(topoDSFaces, TopAbs_FACE);
 
-      while (myFaceExplorer.More())
-      {
-        TopoDS_Shape shape = myFaceExplorer.Current();
-        TopoDS_Face face = TopoDS::Face(shape);
-        ModelFace *test;
+      while (myFaceExplorer.More()){
+        TopoDS_Shape aShape = myFaceExplorer.Current();
 
-        ++p;
-        Standard_Real curvature = compute_curvature(face);
-        if (roundd(curvature) == 0.0){
-          ++nfaces;
-          test = new ModelFace(p, PlaneType::PLANAR);
-        } else {
-          ++nbends;
-          test = new ModelFace(p, PlaneType::NON_PLANAR);
-        }
+        ++faceID;
 
-        test->setUnitNormal(compute_unit_normal(face));
-        test->setCurvature(curvature);
-        test->extractEdges(face);
-        test->setBendLength(test->getFaceEdges());
-        test->computeFaceNormal();
-        test->computeFaceEquation();
-        // test->setTopoDSFace(face);
-        addFace(*test);
-        addTopoDSFace(face);
-
-        if (test->getPlaneType() == PlaneType::NON_PLANAR){
-          // std::cout << "B"<< p;
-        }
-        // BRepAdaptor_Surface faceDir = BRepAdaptor_Surface(face, Standard_False);
-        // gp_Dir dir = faceDir.Direction();
-        // std::cout << " Orientation : " << face.Orientation() << " for Face ID : " << p << '\n';
+        model_.assignFaceAttributes(faceID, aShape);
 
         myFaceExplorer.Next();
       }
     }
-
-    std::cout << "Number of faces : " << nfaces << " Number of bends: " << nbends << '\n';
   }
 
 }
