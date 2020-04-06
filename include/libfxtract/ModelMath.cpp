@@ -2,24 +2,17 @@
 
 namespace Fxt {
 
-  long double roundd(long double var)
+  Standard_Real roundd(long double value)
   {
-    // we use array of chars to store number
-    // as a string.
     char str[40];
 
-    // Print in string the value of var
-    // with two decimal point
-    sprintf(str, "%.2Lf", var);
+    sprintf(str, "%.2Lf", value);
+    sscanf(str, "%Lf", &value);
 
-    // scan string value in var
-    sscanf(str, "%Lf", &var);
-
-    return var;
+    return value;
   }
 
-  gp_Dir
-  compute_unit_normal(TopoDS_Face face)
+  gp_Dir computeUnitNormal(TopoDS_Face face)
   {
     Standard_Real umin, umax, vmin, vmax;
     BRepTools::UVBounds(face, umin, umax, vmin, vmax); // create surface
